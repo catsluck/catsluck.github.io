@@ -685,8 +685,9 @@ async function commentCatsLuck() {
   if(name.length != 0) {
     localStorage.setItem("NickName", name)
   } else {
-    name = "luckycat(ID:"+ethers.BigNumber.from(signerAddr.substr(0, 8)).toNumber()+")"
+    name = "luckycat"
   }
+  name = name+"(ID:"+ethers.BigNumber.from(signerAddr.substr(0, 8)).toNumber()+")"
   var s = Math.floor(Date.now()/1000)
   s = s+" "+name+"\n"+txt
   const encoder = new TextEncoder()
