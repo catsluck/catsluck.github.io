@@ -264,9 +264,11 @@ async function init() {
   var clkLink = $("#clkLink")
   clkLink.prop("href", "https://smartscan.cash/address/"+clkAddress)
 
-  var name = localStorage.getItem("YourName")
+  var name = localStorage.getItem("NickName")
   if(name) {
-    $("#yourName").val(name)
+    $("#nickName").val(name)
+  } else {
+    $("#nickName").prop("placeholder", "luckycat(ID:"+ethers.BigNumber.from(signerAddr.substr(0, 8)).toNumber()+")")
   }
 
   var reward  = await roContract.getMyReward()
@@ -521,7 +523,7 @@ async function showComments(startHeight, toHeight, provider) {
   var logs = await getLogs(startHeight, toHeight, provider, filter, 200)
   let utf8decoder = new TextDecoder()
   var commentList = $("#commentList")
-  for(var i=logs.length-1; i>=0; i--) {
+  for(var i=0; i<logs.length && i<200; i++) {
     const data = ethers.utils.arrayify(logs[i].data)
     const txt = utf8decoder.decode(data)
     var n = txt.indexOf("\n")
@@ -549,7 +551,8 @@ async function showBuybackHistory() {
   $("#buybackHisDlgLoading").hide()
   var tbl = $("#buybackTbl")
   tbl.html(`<tr><th>Block</th><th>BuyBack Amount</th></tr>`)
-  for(var i=logs.length-1; i>=0; i--) {
+  var end = Math.max(logs.length-200, 0)
+  for(var i=logs.length-1; i>=end; i--) {
     var log = logs[i]
     var amt = ethers.utils.formatUnits(log.data)*1.0
     amt = amt.toFixed(4)
@@ -667,7 +670,7 @@ function hasOnlyASCII(str){
 }
 
 async function commentCatsLuck() {
-  var name = $("#yourName").val()
+  var name = $("#nickName").val()
   var txt = $("#yourComment").val()
   if(!hasOnlyASCII(txt)) {
     $("#warnText").text(`Please use English text only.`)
@@ -675,6 +678,14 @@ async function commentCatsLuck() {
       $(this).dialog("close")
     }}})
     return
+  }
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+  const signer = provider.getSigner()
+  const signerAddr = await signer.getAddress()
+  if(name.length != 0) {
+    localStorage.setItem("NickName", name)
+  } else {
+    name = "luckycat(ID:"+ethers.BigNumber.from(signerAddr.substr(0, 8)).toNumber()+")"
   }
   var s = Math.floor(Date.now()/1000)
   s = s+" "+name+"\n"+txt
@@ -691,11 +702,6 @@ async function commentCatsLuck() {
   if(hex.length%64 != 0) {
     hex += "0".repeat(64-hex.length%64)
   }
-  if(name != "anonymous") {
-    localStorage.setItem("YourName", name)
-  }
-  const provider = new ethers.providers.Web3Provider(window.ethereum)
-  const signer = provider.getSigner()
   const commentContract = new ethers.Contract(commentAddress, CommentABI, provider).connect(signer)
   const wordCount = hex.length/64
   if(wordCount == 1) {
@@ -825,8 +831,8 @@ $(function() { //document.onload
   </div>
 
   <div id="comment">
-    <p><label for="yourName">Your Name:</label>
-    <input id="yourName" type="text" value="anonymous" style="width: 260px"></p>
+    <p><label for="nickName">Nick Name:</label>
+    <input id="nickName" type="text" style="width: 260px"></p>
     <textarea id="yourComment" style="width: 350px; height: 100px" placeholder="Please write something to comment catsluck"></textarea>
     <p><button id="commentBtn" class="ui-button ui-widget ui-corner-all">Comment</button></p>
     <hr>
