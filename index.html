@@ -77,6 +77,7 @@ const DefaultGasPrice = ethers.BigNumber.from("0x3e63fa64")
 const AllOnes = ethers.BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
 const cashcatsAddress = "0x265bD28d79400D55a1665707Fa14A72978FA6043"
 const clkAddress = "0x659F04F36e90143fCaC202D4BC36C699C078fC98"
+const commentAddress = "0x712886a17fD38C75Fb8f5c22DE392aEaFa52a729"
 const CatsDecimal = 2
 const ShareDecimal = 8
 const SmartBCHChainId = 10000
@@ -85,6 +86,7 @@ const Buy = ethers.utils.id("Buy(address,uint256)")
 const Win = ethers.utils.id("Win(address,uint256)")
 const Deposit = ethers.utils.id("Deposit(address,uint256)")
 const Withdraw = ethers.utils.id("Withdraw(address,uint256)")
+const Transfer = ethers.utils.id("Transfer(address,address,uint256)")
 
 window.totalShare = 0
 window.totalCATS = 0
@@ -119,6 +121,18 @@ const Erc20ABI = [
 "function approve(address spender, uint256 amount) external returns (bool)",
 "function balanceOf(address account) external view returns (uint256)",
 "function allowance(address owner, address spender) external view returns (uint256)"
+]
+
+const CommentABI = [
+"function comment1(uint w1) external",
+"function comment2(uint w1, uint w2) external",
+"function comment3(uint w1, uint w2, uint w3) external",
+"function comment4(uint w1, uint w2, uint w3, uint w4) external",
+"function comment5(uint w1, uint w2, uint w3, uint w4, uint w5) external",
+"function comment6(uint w1, uint w2, uint w3, uint w4, uint w5, uint w6) external",
+"function comment7(uint w1, uint w2, uint w3, uint w4, uint w5, uint w6, uint w7) external",
+"function comment8(uint w1, uint w2, uint w3, uint w4, uint w5, uint w6, uint w7, uint w8) external",
+"function comment9(uint w1, uint w2, uint w3, uint w4, uint w5, uint w6, uint w7, uint w8, uint w9) external",
 ]
 
 async function syncValues(autoFillAmount) {
@@ -192,7 +206,14 @@ async function syncValues(autoFillAmount) {
 }
 
 async function getInfo(catsluckContract, addr) {
-  var [totalCATS, totalShare, userShareAndLockUntil] = await catsluckContract.info(addr)
+  try {
+    var [totalCATS, totalShare, userShareAndLockUntil] = await catsluckContract.info(addr)
+  } catch(e) {
+    $("#warnText").text(`Cannot connect to RPC-Server!`)
+    $("#warnDlg").dialog({modal: true, buttons: {Ok: function(){
+      $(this).dialog("close")
+    }}})
+  }
   var userShare = userShareAndLockUntil.div(ethers.BigNumber.from(2).pow(64))
   window.totalCATS = ethers.utils.formatUnits(totalCATS, CatsDecimal)*1.0
   window.totalShare = ethers.utils.formatUnits(totalShare, ShareDecimal)*1.0
@@ -240,13 +261,19 @@ async function init() {
   await syncValues(true)
   setInterval(async function() {await syncValues(false);}, 10000)
 
-  $("#clkAddress").text(clkAddress)
-
   var clkLink = $("#clkLink")
   clkLink.prop("href", "https://smartscan.cash/address/"+clkAddress)
 
+  var name = localStorage.getItem("NickName")
+  if(name) {
+    $("#nickName").val(name)
+  } else {
+    $("#nickName").prop("placeholder", "luckycat(ID:"+ethers.BigNumber.from(signerAddr.substr(0, 8)).toNumber()+")")
+  }
+
   var reward  = await roContract.getMyReward()
   showAndUpdateHistoryTable()
+  showCommentsAndUpdate()
   for(var i=0; i<30 && reward.eq(AllOnes); i++) { // wait until the block hash is available
     await sleep(2000)
     reward = await roContract.getMyReward()
@@ -473,14 +500,76 @@ async function showMyHistory() {
   showPoolOperations(logs)
 }
 
+function escapeHTML(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function showCommentsAndUpdate() {
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+  window.latestHeight4Comment = await provider.getBlockNumber()
+  await showComments(1950000, window.latestHeight4Comment, provider)
+  window.tableUpdateInterval = setInterval(async function() {
+    var newHeight = await provider.getBlockNumber()
+    console.log("ii", window.latestHeight4Comment+1, newHeight)
+    if(window.latestHeight4Comment+1 <= newHeight) {
+      await showComments(window.latestHeight4Comment+1, newHeight, provider)
+    }
+    window.latestHeight4Comment = newHeight
+  }, 10000)
+}
+
+async function showComments(startHeight, toHeight, provider) {
+  var filter = {address: commentAddress}
+  var logs = await getLogs(startHeight, toHeight, provider, filter, 200)
+  let utf8decoder = new TextDecoder()
+  var commentList = $("#commentList")
+  for(var i=0; i<logs.length && i<200; i++) {
+    const data = ethers.utils.arrayify(logs[i].data)
+    const txt = utf8decoder.decode(data)
+    var n = txt.indexOf("\n")
+    const content = escapeHTML(txt.slice(n+1))
+    const timeAndSender = txt.slice(0, n)
+    n = timeAndSender.indexOf(" ")
+    const timestamp = timeAndSender.slice(0, n)
+    const sender = timeAndSender.substr(n+1)
+    const t = formatTime(1000*timestamp)
+    commentList.prepend(`<p>${t} <b>${sender}:</b><span style="white-space: pre-line">${content}</span></p>`)
+  }
+}
+
+async function showBuybackHistory() {
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+  var filter = {address: clkAddress, topics: [Transfer, 
+		  "0x0000000000000000000000009ffc24c4e0123015841a14e95882d4739bbf7cb0",
+		  "0x0000000000000000000000000000000000000000000000000000000000000001"]}
+  var toHeight = await provider.getBlockNumber()
+  $("#buybackHisDlgLoading").show()
+  $("#buybackHisDlg").dialog({modal: true, buttons: {Ok: function(){
+    $(this).dialog("close")
+  }}})
+  var logs = await getLogs(DefaultStartHeight, toHeight, provider, filter, 200)
+  $("#buybackHisDlgLoading").hide()
+  var tbl = $("#buybackTbl")
+  tbl.html(`<tr><th>Block</th><th>BuyBack Amount</th></tr>`)
+  var end = Math.max(logs.length-200, 0)
+  for(var i=logs.length-1; i>=end; i--) {
+    var log = logs[i]
+    var amt = ethers.utils.formatUnits(log.data)*1.0
+    amt = amt.toFixed(4)
+    tbl.append(`<tr><td><code>${log.blockNumber}</code></td><td><code>${amt}</code></td></tr>`)
+  }
+  return false;
+}
+
 async function getLogs(startHeight, toHeight, provider, filter, countLimit) {
   var allLogs = []
   while(toHeight > startHeight) {
     filter.fromBlock = Math.max(toHeight-10000+1, startHeight)
     filter.toBlock = toHeight
-    console.log("aaa ", filter.fromBlock, filter.toBlock)
     var logs = await provider.getLogs(filter)
+    //console.log("aaa ", filter.fromBlock, filter.toBlock, logs.length)
     for(var i=logs.length-1; i>=0; i--) {
+      //console.log("bnumber ", logs[i].blockNumber)
       allLogs.unshift(logs[i])
     }
     if(allLogs.length > countLimit) {
@@ -526,13 +615,15 @@ async function showAndUpdateHistoryTable() {
   clearInterval(window.tableUpdateInterval)
   $("#historyTable").html(`<tr id="hisTblHead"><th>Time</th><th>Balance</th><th>Multiplier</th><th>txid</th></tr>`)
   const provider = new ethers.providers.Web3Provider(window.ethereum)
-  window.latestHeight = await provider.getBlockNumber()
-  showHistoryTable(DefaultStartHeight, window.latestHeight, provider)
+  window.latestHeight4HisTbl = await provider.getBlockNumber()
+  await showHistoryTable(DefaultStartHeight, window.latestHeight4HisTbl, provider)
   window.tableUpdateInterval = setInterval(async function() {
     var newHeight = await provider.getBlockNumber()
-    await showHistoryTable(window.latestHeight+1, newHeight, provider)
-    window.latestHeight = newHeight
-  }, 6000)
+    if(window.latestHeight4HisTbl+1 <= newHeight) {
+      await showHistoryTable(window.latestHeight4HisTbl+1, newHeight, provider)
+    }
+    window.latestHeight4HisTbl = newHeight
+  }, 10000)
 }
 
 async function showHistoryTable(startHeight, toHeight, provider) {
@@ -566,6 +657,74 @@ async function showHistoryTable(startHeight, toHeight, provider) {
   }
 }
 
+function hasOnlyASCII(str){
+  if(typeof(str)!=='string'){
+    return false;
+  }
+  for(var i=0;i<str.length;i++){
+    if(str.charCodeAt(i)>127){
+      return false;
+    }
+  }
+  return true;
+}
+
+async function commentCatsLuck() {
+  var name = $("#nickName").val()
+  var txt = $("#yourComment").val()
+  if(!hasOnlyASCII(txt)) {
+    $("#warnText").text(`Please use English text only.`)
+    $("#warnDlg").dialog({modal: true, buttons: {Ok: function(){
+      $(this).dialog("close")
+    }}})
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+  const signer = provider.getSigner()
+  const signerAddr = await signer.getAddress()
+  if(name.length != 0) {
+    localStorage.setItem("NickName", name)
+  } else {
+    name = "luckycat"
+  }
+  name = name+"(ID:"+ethers.BigNumber.from(signerAddr.substr(0, 8)).toNumber()+")"
+  var s = Math.floor(Date.now()/1000)
+  s = s+" "+name+"\n"+txt
+  const encoder = new TextEncoder()
+  const encData = encoder.encode(s)
+  var hex = ethers.utils.hexlify(encData).substr(2)
+  if(hex.length > 64*9) {
+    $("#warnText").text(`Your text is too long, please make it shorter.`)
+    $("#warnDlg").dialog({modal: true, buttons: {Ok: function(){
+      $(this).dialog("close")
+    }}})
+    return
+  }
+  if(hex.length%64 != 0) {
+    hex += "0".repeat(64-hex.length%64)
+  }
+  const commentContract = new ethers.Contract(commentAddress, CommentABI, provider).connect(signer)
+  const wordCount = hex.length/64
+  if(wordCount == 1) {
+    await commentContract.comment1("0x"+hex.substr(0, 64), {gasPrice: DefaultGasPrice})
+  } else if(wordCount == 2) {
+    await commentContract.comment2("0x"+hex.substr(0, 64), "0x"+hex.substr(64, 64), {gasPrice: DefaultGasPrice})
+  } else if(wordCount == 3) {
+    await commentContract.comment3("0x"+hex.substr(0, 64), "0x"+hex.substr(64, 64), "0x"+hex.substr(128, 64), {gasPrice: DefaultGasPrice})
+  } else if(wordCount == 4) {
+    await commentContract.comment4("0x"+hex.substr(0, 64), "0x"+hex.substr(64, 64), "0x"+hex.substr(128, 64), "0x"+hex.substr(192, 64), {gasPrice: DefaultGasPrice})
+  } else if(wordCount == 5) {
+    await commentContract.comment5("0x"+hex.substr(0, 64), "0x"+hex.substr(64, 64), "0x"+hex.substr(128, 64), "0x"+hex.substr(192, 64), "0x"+hex.substr(256, 64), {gasPrice: DefaultGasPrice})
+  } else if(wordCount == 6) {
+    await commentContract.comment6("0x"+hex.substr(0, 64), "0x"+hex.substr(64, 64), "0x"+hex.substr(128, 64), "0x"+hex.substr(192, 64), "0x"+hex.substr(256, 64), "0x"+hex.substr(320, 64), {gasPrice: DefaultGasPrice})
+  } else if(wordCount == 7) {
+    await commentContract.comment7("0x"+hex.substr(0, 64), "0x"+hex.substr(64, 64), "0x"+hex.substr(128, 64), "0x"+hex.substr(192, 64), "0x"+hex.substr(256, 64), "0x"+hex.substr(320, 64), "0x"+hex.substr(384, 64), {gasPrice: DefaultGasPrice})
+  } else if(wordCount == 8) {
+    await commentContract.comment8("0x"+hex.substr(0, 64), "0x"+hex.substr(64, 64), "0x"+hex.substr(128, 64), "0x"+hex.substr(192, 64), "0x"+hex.substr(256, 64), "0x"+hex.substr(320, 64), "0x"+hex.substr(384, 64), "0x"+hex.substr(448, 64), {gasPrice: DefaultGasPrice})
+  } else if(wordCount == 9) {
+    await commentContract.comment9("0x"+hex.substr(0, 64), "0x"+hex.substr(64, 64), "0x"+hex.substr(128, 64), "0x"+hex.substr(192, 64), "0x"+hex.substr(256, 64), "0x"+hex.substr(320, 64), "0x"+hex.substr(384, 64), "0x"+hex.substr(448, 64), "0x"+hex.substr(512, 64), {gasPrice: DefaultGasPrice})
+  }
+}
 
 $(function() { //document.onload
   $(document).tooltip();
@@ -594,6 +753,10 @@ $(function() { //document.onload
     showAndUpdateHistoryTable()
   });
   
+  $("#commentBtn").on("click", function() {
+    commentCatsLuck()
+  });
+
   $("#poolHisBtn").on("click", async function() {
     $(this).prop('disabled', true)
     const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -625,6 +788,7 @@ $(function() { //document.onload
     <li><a href="#buy">Buy</a></li>
     <li><a href="#pool">Pool</a></li>
     <li><a href="#faq">FAQ</a></li>
+    <li><a href="#comment">Comment</a></li>
   </ul>
   <div id="buy">
     <p><label for="multiplier">Muptiplier:</label>
@@ -667,11 +831,20 @@ $(function() { //document.onload
     <p id="totalEarningP" style="display: none">Your total earnings: <span id="totalEarning"></span> $CATS.</p>
   </div>
 
+  <div id="comment">
+    <p><label for="nickName">Nick Name:</label>
+    <input id="nickName" type="text" style="width: 260px"></p>
+    <textarea id="yourComment" style="width: 350px; height: 100px" placeholder="Please write something to comment catsluck"></textarea>
+    <p><button id="commentBtn" class="ui-button ui-widget ui-corner-all">Comment</button></p>
+    <hr>
+    <div id="commentList"></div>
+  </div>
+
   <div id="faq">
     <p><b>Who's behind Catsluck?</b></p>
     <p>We are supporters of <a target="_blank" href="https://cashcats.org">cashcats</a>. People often ask what can we do with $CATS? So catsluck was born. You can bet and invest with $CATS now, and do more things in the future.</p>
     <p><b>What is CLK?</b></p>
-    <p>CLK's address: <span id="clkAddress"></span></p>
+    <p>CLK's address: 0x659F04F36e90143fCaC202D4BC36C699C078fC98</p>
     <p>CLK is catsluck's exclusive token. CLK does not set a fixed upper limit. Before <span id="mintEndTime" style="font-weight: bold"></span>, users will get 1 free CLK every time he bets 1 $CATS. After that, the total amount of CLK does not increase. Till now, totally <span id="clkSupply" style="font-weight: bold">--</span> CLK have been minted. Please let your wallet <a href="javascript:" onclick="return watchCLK();">watch CLK</a>.</p>
     <p><b>Does the development team reserve CLK?</b></p>
     <p>Not at all. Absolutely fair distribution.</p>
@@ -679,7 +852,7 @@ $(function() { //document.onload
     <p><a target="_blank" href="https://dex.benswap.cash/#/swap?outputCurrency=0x659F04F36e90143fCaC202D4BC36C699C078fC98&inputCurrency=0x265bD28d79400D55a1665707Fa14A72978FA6043">CLK/$CATS</a> trading pair on benswap.</p>
     <p><b>What is house edge?</b></p>
     <p>The house edge is 2%.</p>
-    <p>1% is allocated to reward pool and another 1% is used to buy back CLK in circulation. Currently, there have been <span id="buybackPoolTokenCount" style="font-weight: bold">--</span> $CATS accumulated for buyback, which equals about <span id="CLKcanBeBought" style="font-weight: bold">--</span> CLK. Anyone can <a href="javascript:" onclick="return buybackAndBurn();">send a transaction</a> to buy CLK with these $CATS and burn them. Till now, totally <span id="totalBurnt" style="font-weight: bold">--</span> CLK have been bought back and burnt.</p>
+    <p>1% is allocated to reward pool and another 1% is used to buy back CLK in circulation. Currently, there have been <span id="buybackPoolTokenCount" style="font-weight: bold">--</span> $CATS accumulated for buyback, which equals about <span id="CLKcanBeBought" style="font-weight: bold">--</span> CLK. Anyone can <a href="javascript:" onclick="return buybackAndBurn();">send a transaction</a> to buy CLK with these $CATS and burn them. Till now, totally <span id="totalBurnt" style="font-weight: bold">--</span> CLK have been <a href="javascript:" onclick="return showBuybackHistory();">bought back and burnt</a>.</p>
     <p><b>Future plans?</b></p>
     <ol>
     <li>Code Audit</li>
@@ -711,6 +884,12 @@ setInterval(function() {
 
 <div id="waitDlg" title="Please wait..." style="display: none">
 <p>Processing your order.<br>Please wait&nbsp;<b id="loading"></b></p>
+</div>
+ 
+<div id="buybackHisDlg" title="Recent Buyback Records" style="display: none">
+<p id="buybackHisDlgLoading">Loading data...<br>Please wait.</p>
+<table id="buybackTbl">
+</table>
 </div>
  
 <div id="noRewardDlg" title="☹️ &nbsp;No Reward&nbsp;☹️" style="display: none">
