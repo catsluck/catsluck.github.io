@@ -485,7 +485,7 @@ function formatTime(timestamp) {
     hour: 'numeric',
     minute: 'numeric',
     hour12: false,
-  })
+  }).replace("24:", "00:")
 }
 
 const DefaultStartHeight = 1800000;
