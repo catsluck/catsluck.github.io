@@ -642,6 +642,12 @@ class CatsLuck {
       if(window.AddrForHistory) {
         addr = window.AddrForHistory
       }
+      try {
+        ethers.utils.getAddress(addr)
+      } catch(e) {
+	alert("Invalid Address: "+ addr)
+        return
+      }
       const signerAddr32 = ethers.utils.hexZeroPad(addr, 32)
       filter.topics.push(signerAddr32)
     }
@@ -678,7 +684,11 @@ class CatsLuck {
     $("#totalWon").text(this.totalWon.toFixed(0))
     var roi = this.totalWon*100/this.totalBought
     $("#roi").text(roi.toFixed(2))
-    $("#roiInfo").show()
+    if(window.OnlyMyLottery) {
+      $("#roiInfo").show()
+    } else {
+      $("#roiInfo").hide()
+    }
   }
   
   async showAndUpdateHistoryTable() {
@@ -769,22 +779,26 @@ $(function() { //document.onload
     var v = $(this).val()
     if(v=="Lotteries of All Addresses") {
       window.OnlyMyLottery = false
+      window.AddrForHistory = null
+      $("#roiInfo").hide()
+      $("#specifiedAddrP").hide()
+      window.catsLuck.showAndUpdateHistoryTable()
     } else if(v=="Lotteries of My Address") {
       window.OnlyMyLottery = true
       window.AddrForHistory = null
+      $("#specifiedAddrP").hide()
+      window.catsLuck.showAndUpdateHistoryTable()
     } else if(v=="Lotteries of a Specified Address") {
       window.OnlyMyLottery = true
-      window.AddrForHistory = prompt("Please specify an address:")
-      try {
-        ethers.utils.getAddress(window.AddrForHistory)
-      } catch(e) {
-	alert("Invalid Address: "+ window.AddrForHistory)
-        window.AddrForHistory = null
-        return
-      }
+      $("#addrDlg").dialog({modal: true, buttons: {Ok: function(){
+        window.AddrForHistory = $("#specifiedAddr").val()
+        console.log("ii", window.AddrForHistory)
+        $("#specifiedAddrSpan").text(window.AddrForHistory)
+        $("#specifiedAddrP").show()
+        $(this).dialog("close")
+        window.catsLuck.showAndUpdateHistoryTable()
+      }}})
     }
-    console.log("selectmenuchange", v, window.OnlyMyLottery, window.AddrForHistory)
-    window.catsLuck.showAndUpdateHistoryTable()
   });
   
   $("#buyBtn").on("click", async function() {
@@ -880,6 +894,7 @@ $(function() { //document.onload
     </select></p>
     <p><button id="recCountBtn" class="ui-button ui-widget ui-corner-all">Show at most <span id="recCountLimit">200</span> records.</button></p>
     <p><button id="refreshBtn" class="ui-button ui-widget ui-corner-all"><img style="width: 15px; height: auto; vertical-align: sub" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSIxNzkyIiB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB3aWR0aD0iMTc5MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTYzOSAxMDU2cTAgNS0xIDctNjQgMjY4LTI2OCA0MzQuNXQtNDc4IDE2Ni41cS0xNDYgMC0yODIuNS01NXQtMjQzLjUtMTU3bC0xMjkgMTI5cS0xOSAxOS00NSAxOXQtNDUtMTktMTktNDV2LTQ0OHEwLTI2IDE5LTQ1dDQ1LTE5aDQ0OHEyNiAwIDQ1IDE5dDE5IDQ1LTE5IDQ1bC0xMzcgMTM3cTcxIDY2IDE2MSAxMDJ0MTg3IDM2cTEzNCAwIDI1MC02NXQxODYtMTc5cTExLTE3IDUzLTExNyA4LTIzIDMwLTIzaDE5MnExMyAwIDIyLjUgOS41dDkuNSAyMi41em0yNS04MDB2NDQ4cTAgMjYtMTkgNDV0LTQ1IDE5aC00NDhxLTI2IDAtNDUtMTl0LTE5LTQ1IDE5LTQ1bDEzOC0xMzhxLTE0OC0xMzctMzQ5LTEzNy0xMzQgMC0yNTAgNjV0LTE4NiAxNzlxLTExIDE3LTUzIDExNy04IDIzLTMwIDIzaC0xOTlxLTEzIDAtMjIuNS05LjV0LTkuNS0yMi41di03cTY1LTI2OCAyNzAtNDM0LjV0NDgwLTE2Ni41cTE0NiAwIDI4NCA1NS41dDI0NSAxNTYuNWwxMzAtMTI5cTE5LTE5IDQ1LTE5dDQ1IDE5IDE5IDQ1eiIvPjwvc3ZnPg==">&nbsp;Refresh</button></p>
+    <p id="specifiedAddrP" style="display: none">Addr: <span id="specifiedAddrSpan"></span></p>
     <p id="roiInfo" style="display: none">Total Won / Total Bought = <span id="totalWon">--</span> / <span id="totalBought">--</span> = <span id="roi">--</span>%</p>
     <table id="historyTable">
     </table>
@@ -960,6 +975,10 @@ setInterval(function() {
 
 <div id="waitDlg" title="Please wait..." style="display: none">
 <p>Processing your order.<br>Please wait&nbsp;<b id="loading"></b></p>
+</div>
+ 
+<div id="addrDlg" title="Specify an address" style="display: none">
+	<input id="specifiedAddr" type="text" style="width: 220px">
 </div>
  
 <div id="buybackHisDlg" title="Recent Buyback Records" style="display: none">
