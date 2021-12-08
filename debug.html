@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CatsLuck</title>
-<link rel="icon" href="/clk.png">
+<link rel="icon" href="/img/clk.png">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <style>
 body {
@@ -324,7 +324,7 @@ class CatsLuck {
         address: clkAddress,
         symbol: "CLK",
         decimals: 18,
-        image: ImageURI,
+        image: "https://catsluck.com/img/clk.png",
       },
     }})
   
@@ -849,7 +849,7 @@ $(function() { //document.onload
 </script>
 </head>
 <body>
-<center><img style="height: 60px; width: auto;" src="/catsluck.jpg"/></center>
+<center><img style="height: 80px; width: auto;" src="/img/catsluck.jpg"/></center>
 <div id="tabs">
   <ul>
     <li><a href="#buy">Buy</a></li>
@@ -934,9 +934,13 @@ $(function() { //document.onload
     </ol>
     <p><b>Is it open source?</b></p>
     <p>Yes. Check it here <a href="https://github.com/catsluck/catsluck">https://github.com/catsluck/catsluck</a>.</p>
+    <p><b>Where can I find help?</b></p>
+    <p>Some users set up these channels:</p>
+    <p><a target="_blank" href="https://t.me/catsluck_chinese">https://t.me/catsluck_chinese</a></p>
+    <p><a target="_blank" href="https://t.me/catsluck_english">https://t.me/catsluck_english</a></p>
+    <p>You can try to ask question there. But the lazy developers are not in them.</p>
   </div>
 </div>
-
 
 <div id="pendingRewardDlg" title="Get Pending Reward" style="display: none">
   <p>You have a pending reward of <b id="pendingRewardAmount"></b> $CATS. Please receive it!</p>
