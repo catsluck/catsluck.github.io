@@ -363,7 +363,7 @@ class CatsLuck {
     }
     if(!reward.isZero() && !reward.eq(AllOnes)) {
       $("#pendingRewardAmount").text(ethers.utils.formatUnits(reward, CoinDecimal))
-      $("#pendingRewardDlg").dialog({modal: true, buttons: {Ok: function() {
+      $("#pendingRewardDlg").dialog({modal: true, dialogClass: "no-close", buttons: {Ok: function() {
         window.catsLuck.receivePendingReward();
         $(this).dialog("close")
       }}});
@@ -450,7 +450,7 @@ class CatsLuck {
       }}})
       return
     }
-    $("#yesRewardDlg").dialog({modal: true, buttons: {Ok: function() {
+    $("#yesRewardDlg").dialog({modal: true, dialogClass: "no-close", buttons: {Ok: function() {
       window.catsLuck.receivePendingReward()
       $(this).dialog("close")
     }}})
