@@ -590,7 +590,7 @@ class CatsLuck4BCH {
         }
       }
       html += `<td><a target="_blank" href="https://smartscan.cash/transaction/${log.transactionHash}">view</a></td></tr>`
-      var logId = log.transactionHash+"-"+log.transactionLogIndex
+      var logId = log.transactionHash+"-"+log.logIndex
       if(!this.logIdSet.has(logId)) {
         hisTblHead.after(html)
         this.logIdSet.add(logId)
@@ -651,7 +651,7 @@ $(function() { //document.onload
     } else if(v=="Lotteries of a Specified Address") {
       window.OnlyMyLottery = true
       $("#addrDlg").dialog({modal: true, buttons: {Ok: function(){
-        window.AddrForHistory = $("#specifiedAddr").val()
+        window.AddrForHistory = $("#specifiedAddr").val().trim()
         $("#specifiedAddrSpan").text(window.AddrForHistory)
         $("#specifiedAddrP").show()
         $(this).dialog("close")
