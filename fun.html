@@ -130,26 +130,16 @@ function formatTime(timestamp) {
   }).replace("24:", "00:")
 }
 
-function switchDetail() {
-  var n = $("#updownArrow")
-  if(n.text() == "⬇️") {
-    n.text("⬆️")
-    $("#feeDetail").show()
-  } else {
-    n.text("⬇️")
-    $("#feeDetail").hide()
-  }
-}
-
 </script>
 <script>
 const DefaultGasPrice = ethers.BigNumber.from("0x3e63fa64")
 const AllOnes = ethers.BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
-const bchAddress = "0x0000000000000000000000000000000000002711"
-const poolAddress = "0x4d16fB4811cf8BF7a5d35397527A95911E122611"
-const CoinDecimal = 18 
-const DisplayDigits = 8
-const ShareDecimal = 18
+const catsAddress = "0x265bD28d79400D55a1665707Fa14A72978FA6043"
+const funAddress = "0xFE2de72a416F79058d682612a3af652Aa7d02555"
+const poolAddress = "0xEE4CA132e07246a0066239923EB146816Bb2ee06"
+const CoinDecimal = 8 
+const DisplayDigits = 0
+const ShareDecimal = 8
 const SmartBCHChainId = 10000
 const DefaultStartHeight = 1800000;
 
@@ -160,9 +150,9 @@ const Withdraw = ethers.utils.id("Withdraw(address,uint256)")
 const Transfer = ethers.utils.id("Transfer(address,address,uint256)")
 
 const ABI = [
-"function deposit(uint lockUntil) payable public",
+"function deposit(uint amount, uint lockUntil) payable public",
 "function withdraw(uint amount) external",
-"function buyLottery(uint multiplierX100) payable external",
+"function buyLottery(uint amount, uint multiplierX100) payable external",
 "function getMyReward() external returns (uint)",
 "function buyback() external returns (uint)",
 ]
@@ -186,13 +176,15 @@ const ReadonlyABI = [
 const Erc20ABI = [
 "function approve(address spender, uint256 amount) external returns (bool)",
 "function balanceOf(address account) external view returns (uint256)",
-"function allowance(address owner, address spender) external view returns (uint256)"
+"function allowance(address owner, address spender) external view returns (uint256)",
+"function totalSupply() external view returns (uint)",
+"function mint() public",
 ]
 
-class CatsLuck4BCH {
+class CatsLuck4Fun {
   constructor() {
     this.lockUntil = 0
-    this.totalShare = 0 //@
+    this.totalShare = 0
     this.totalCoins = 0
     this.userShare = 0
     this.userCoins = 0
@@ -203,11 +195,11 @@ class CatsLuck4BCH {
     var multiplier = $("#multiplier").val()*1.0
     var amount = $("#amount").val()
     $("#mulValue").text(multiplier)
-    var maxAmount = this.totalCoins*0.99/multiplier/200.0 //@
+    var maxAmount = this.totalCoins*0.99/multiplier/200.0
     if(multiplier > 3) {
       maxAmount = this.totalCoins*0.99/multiplier/100.0
     }
-    $("#maxAmount").text(maxAmount.toFixed(8).replace(/0+$/,""))
+    $("#maxAmount").text(maxAmount.toFixed(0))
     $("#amountWarn").text("")
     if(amount > maxAmount) {
       if(autoFillAmount) {
@@ -217,8 +209,8 @@ class CatsLuck4BCH {
         $("#amountWarn").text(`> ${maxAmount}`)
       }
     }
-    if(amount < 0.00000001) {
-      $("#amountWarn").text(`< 0.00000001`)
+    if(amount < 100) {
+      $("#amountWarn").text(`< 100`)
     }
     $("#syncAmount").text(amount)
     var chance = 100.0/multiplier
@@ -230,28 +222,23 @@ class CatsLuck4BCH {
       chance = chance.toFixed(2)
     }
     $("#chance").text(chance)
-    var feeAmount = amount*0.025 //@
-    $("#feeAmount").text((feeAmount.toFixed(DisplayDigits)*1.0).toFixed(8).replace(/0+$/,""))
+    var feeAmount = amount*0.025
+    $("#feeAmount").text(feeAmount.toFixed(1)*1.0)
     var rewardAmount = (amount-feeAmount)*multiplier
-    $("#rewardAmount").text((rewardAmount.toFixed(DisplayDigits)*1.0).toFixed(8).replace(/0+$/,""))
-  
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const roContract = new ethers.Contract(poolAddress, ReadonlyABI, provider)
+    $("#rewardAmount").text(rewardAmount.toFixed(0))
 
-    var buybackPoolTokenCount = await roContract.buybackPoolTokenCount()
-    $("#buybackPoolTokenCount").text(ethers.utils.formatUnits(buybackPoolTokenCount, CoinDecimal))
-  
-    try {
-      var CLKcanBeBought = 0
-      if(!buybackPoolTokenCount.isZero()) {
-        var CLKcanBeBought = await roContract.buyback()
-        CLKcanBeBought = ethers.utils.formatUnits(CLKcanBeBought)*1.0
-      }
-      $("#CLKcanBeBought").text(CLKcanBeBought.toFixed(4))
-    } catch(e) {
-      //console.log(e)
-      $("#CLKcanBeBought").text("0")
-    }
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const tokenContract = new ethers.Contract(funAddress, Erc20ABI, provider).connect(signer)
+    const supplyBN = await tokenContract.totalSupply()
+    console.log(":", supplyBN)
+    const supply = ethers.utils.formatUnits(supplyBN, CoinDecimal)*1.0
+    $("#funSupply").text(supply.toFixed(0))
+    const catsContract = new ethers.Contract(catsAddress, Erc20ABI, provider).connect(signer)
+    const balanceBN = await catsContract.balanceOf(await signer.getAddress())
+    const balance = ethers.utils.formatUnits(balanceBN, 2)
+    $("#catsBalance").text(balance)
+
   }
 
   async getInfo(poolContract, addr) {
@@ -265,17 +252,17 @@ class CatsLuck4BCH {
     }
     var userShare = userShareAndLockUntil.div(ethers.BigNumber.from(2).pow(64))
     //console.log(totalCoins, totalShare, userShareAndLockUntil)
-    this.lockUntil = userShareAndLockUntil.mod(ethers.BigNumber.from(2).pow(64)) //@
+    this.lockUntil = userShareAndLockUntil.mod(ethers.BigNumber.from(2).pow(64))
     this.totalCoins = ethers.utils.formatUnits(totalCoins, CoinDecimal)*1.0
     this.totalShare = ethers.utils.formatUnits(totalShare, ShareDecimal)*1.0
     this.userShare = ethers.utils.formatUnits(userShare, ShareDecimal)*1.0
     this.userCoins = this.totalCoins*this.userShare/this.totalShare
     var catsPerShare = this.totalCoins/this.totalShare
-    $("#totalCoins").text(this.totalCoins.toFixed(8).replace(/0+$/,""))
-    $("#totalShare").text(this.totalShare.toFixed(8).replace(/0+$/,""))
-    $("#userCoins").text(this.userCoins.toFixed(8).replace(/0+$/,""))
-    $("#userShare").text(this.userShare.toFixed(8).replace(/0+$/,""))
-    $("#catsPerShare").text(catsPerShare.toFixed(8).replace(/0+$/,""))
+    $("#totalCoins").text(this.totalCoins.toFixed(0))
+    $("#totalShare").text(this.totalShare.toFixed(0))
+    $("#userCoins").text(this.userCoins.toFixed(0))
+    $("#userShare").text(this.userShare.toFixed(0))
+    $("#catsPerShare").text(catsPerShare.toFixed(0))
   }
 
   async receivePendingReward() {
@@ -283,6 +270,22 @@ class CatsLuck4BCH {
     const signer = provider.getSigner()
     const poolContract = new ethers.Contract(poolAddress, ABI, provider).connect(signer)
     await poolContract.getMyReward({gasPrice: DefaultGasPrice})
+  }
+
+  async watchFUN() {
+    const ok = await ethereum.request({method: "wallet_watchAsset", params: {
+      type: "ERC20",
+      options: {
+        address: funAddress,
+        symbol: "FUN",
+        decimals: 8,
+        image: "https://catsluck.com/img/fun.png",
+      },
+    }})
+  
+    if(!ok) {
+      alert("Failed to make your wallet watch FUN.")
+    }
   }
 
   async init() {
@@ -321,10 +324,17 @@ class CatsLuck4BCH {
     }
   }
 
+  async approveFUN() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const tokenContract = new ethers.Contract(funAddress, Erc20ABI, provider).connect(signer)
+    await tokenContract.approve(poolAddress, ethers.utils.parseUnits("10000"))
+  }
+
   async buy() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
-    const tokenContract = new ethers.Contract(bchAddress, Erc20ABI, provider).connect(signer)
+    const tokenContract = new ethers.Contract(funAddress, Erc20ABI, provider).connect(signer)
     const amount = $("#amount").val()*1.0
     const maxAmount = $("#maxAmount").text()*1.0
     console.log("maxAmount", maxAmount)
@@ -335,7 +345,7 @@ class CatsLuck4BCH {
       }}})
       return
     }
-    if(amount < 0.00000001) {
+    if(amount < 100) {
       $("#warnText").text(`The amount ${amount} is less than the minimum amount!`)
       $("#warnDlg").dialog({modal: true, buttons: {Ok: function(){
         $(this).dialog("close")
@@ -343,11 +353,24 @@ class CatsLuck4BCH {
       return
     }
     const signerAddr = await signer.getAddress()
+    console.log("balance")
     const balanceBN = await tokenContract.balanceOf(signerAddr)
     const balance = ethers.utils.formatUnits(balanceBN, CoinDecimal)*1.0
+    console.log("balance", balance)
     if(balance < amount) {
       $("#warnText").text(`You balance (${balance}) is less than the amount (${amount}) you want to pay!`)
       $("#warnDlg").dialog({modal: true, buttons: {Ok: function(){
+        $(this).dialog("close")
+      }}})
+      return
+    }
+    const allowanceBN = await tokenContract.allowance(signerAddr, poolAddress)
+    const allowance = ethers.utils.formatUnits(allowanceBN, CoinDecimal)*1.0
+    console.log("allowance", allowance)
+    if(allowance < amount) {
+      $("#warnText").text("You have not approved enough allowance to this lottery contract. Please appove and retry buying.")
+      $("#warnDlg").dialog({modal: true, buttons: {Ok: function() {
+        window.catsLuck.approveFUN()
         $(this).dialog("close")
       }}})
       return
@@ -362,8 +385,8 @@ class CatsLuck4BCH {
       }}})
       return
     }
-    //console.log("amountBN", amount, amountBN)
-    const tx = await poolContract.buyLottery(multiplierX100, {value: amountBN, gasPrice: DefaultGasPrice})
+    console.log("amountBN", amount, amountBN)
+    const tx = await poolContract.buyLottery(amountBN, multiplierX100, {gasPrice: DefaultGasPrice})
     $("#waitDlg").dialog({
       modal: true,
       dialogClass: "no-close",
@@ -395,7 +418,7 @@ class CatsLuck4BCH {
   async deposit() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
-    const tokenContract = new ethers.Contract(bchAddress, Erc20ABI, provider).connect(signer)
+    const tokenContract = new ethers.Contract(funAddress, Erc20ABI, provider).connect(signer)
     const depositAmount = $("#depositAmount").val()*1.0
     const signerAddr = await signer.getAddress()
     const balanceBN = await tokenContract.balanceOf(signerAddr)
@@ -408,21 +431,24 @@ class CatsLuck4BCH {
       }}})
       return
     }
+    const allowanceBN = await tokenContract.allowance(signerAddr, poolAddress)
+    const allowance = ethers.utils.formatUnits(allowanceBN, CoinDecimal)*1.0
+    console.log("::", allowance, depositAmount)
+    if(allowance < depositAmount) {
+      $("#warnText").text("You have not approved enough allowance to this lottery contract. Please appove and retry to deposit.")
+      $("#warnDlg").dialog({modal: true, buttons: {Ok: function() {
+        window.catsLuck.approveFUN()
+        $(this).dialog("close")
+      }}})
+      return
+    }
     const poolContract = new ethers.Contract(poolAddress, ABI, provider).connect(signer)
     const depositAmountBN = ethers.utils.parseUnits(depositAmount.toFixed(CoinDecimal), CoinDecimal)
-    await poolContract.deposit(0, {value: depositAmountBN, gasPrice: DefaultGasPrice})
-  }
-  
-  async buybackAndBurn() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
-    const poolContract = new ethers.Contract(poolAddress, ABI, provider).connect(signer)
-    await poolContract.buyback({gasPrice: DefaultGasPrice})
-    return false;
+    await poolContract.deposit(depositAmountBN, 0, {gasPrice: DefaultGasPrice})
   }
   
   async withdraw() {
-    if(Date.now() < 1000* this.lockUntil) { //@
+    if(Date.now() < 1000* this.lockUntil) {
       var dateStr0 = formatTime(1000*(this.lockUntil-3600))
       var dateStr1 = formatTime(1000*(this.lockUntil))
       $("#warnText").text(`It is less than one hour since you last deposit (${dateStr0}), so you cannot withdraw now. You can withdraw after ${dateStr1}.`)
@@ -460,30 +486,6 @@ class CatsLuck4BCH {
     this.showPoolOperations(logs)
   }
   
-  async showBuybackHistory() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    var filter = {address: poolAddress, topics: [Transfer, 
-                  "0x0000000000000000000000009ffc24c4e0123015841a14e95882d4739bbf7cb0",
-                  "0x0000000000000000000000000000000000000000000000000000000000000001"]}
-    var toHeight = await provider.getBlockNumber()
-    $("#buybackHisDlgLoading").show()
-    $("#buybackHisDlg").dialog({modal: true, buttons: {Ok: function(){
-      $(this).dialog("close")
-    }}})
-    var logs = await this.getLogs(DefaultStartHeight, toHeight, provider, filter, 200)
-    $("#buybackHisDlgLoading").hide()
-    var tbl = $("#buybackTbl")
-    tbl.html(`<tr><th>Block</th><th>BuyBack Amount</th></tr>`)
-    var end = Math.max(logs.length-200, 0)
-    for(var i=logs.length-1; i>=end; i--) {
-      var log = logs[i]
-      var amt = ethers.utils.formatUnits(log.data)*1.0
-      amt = amt.toFixed(4)
-      tbl.append(`<tr><td><code>${log.blockNumber}</code></td><td><code>${amt}</code></td></tr>`)
-    }
-    return false;
-  }
-  
   async getLogs(startHeight, toHeight, provider, filter, countLimit) {
     var allLogs = []
     while(toHeight > startHeight) {
@@ -506,7 +508,7 @@ class CatsLuck4BCH {
   showPoolOperations(logs) {
     var poolTable = $("#poolTable")
     poolTable.show()
-    poolTable.html(`<tr><th>Time</th><th>BCH</th><th>txid</th></tr>`)
+    poolTable.html(`<tr><th>Time</th><th>FUN</th><th>txid</th></tr>`)
     var totalInvest = 0
     for(var i=0; i<logs.length; i++) {
       var log = logs[i]
@@ -564,8 +566,7 @@ class CatsLuck4BCH {
         const amount  = ethers.utils.formatUnits(amountBN, CoinDecimal)*1.0
         const multiplierBN = ethers.BigNumber.from("0x"+log.data.substr(42, 8))
         const multiplier = ethers.utils.formatUnits(multiplierBN, 2)
-        var amtStr = amount.toFixed(8).replace(/0+$/,"")
-        if(amtStr == "0.") amtStr = "0.00000001"
+        var amtStr = amount.toFixed(0)
         if(log.topics[0] == Win) {
           this.totalWon += amount
           if( (multiplier > 3 && amount >= this.totalCoins*0.01*0.5) || 
@@ -586,8 +587,8 @@ class CatsLuck4BCH {
         this.logIdSet.add(logId)
       }
     }
-    $("#totalBought").text(this.totalBought.toFixed(8).replace(/0+$/,""))
-    $("#totalWon").text(this.totalWon.toFixed(8).replace(/0+$/,""))
+    $("#totalBought").text(this.totalBought.toFixed(0))
+    $("#totalWon").text(this.totalWon.toFixed(0))
     var roi = this.totalWon*100/this.totalBought
     $("#roi").text(roi.toFixed(2))
     if(window.OnlyMyLottery) {
@@ -615,13 +616,19 @@ class CatsLuck4BCH {
     }, 10000)
   }
   
+  async mint() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const tokenContract = new ethers.Contract(funAddress, Erc20ABI, provider).connect(signer)
+    await tokenContract.mint()
+  }
 }
 
 $(function() { //document.onload
   $(document).tooltip();
   $("#tabs").tabs();
   
-  window.catsLuck = new CatsLuck4BCH()
+  window.catsLuck = new CatsLuck4Fun()
 
   $("#filterMethod").selectmenu();
 
@@ -710,12 +717,13 @@ $(function() { //document.onload
 <body>
 <table style="margin: auto;"><tr>
 <td><a href="/"><img style="height: 80px; width: auto;" src="/img/catsluck.jpg"/></a></td>
-<td style="width: 55px"><img style="height: 55px; width: auto; position: relative; top: 0px; left: 0px" src="/img/BCH.jpg"/></td>
+<td style="width: 55px"><img style="height: 55px; width: auto; position: relative; top: 0px; left: 0px" src="/img/FUN.png"/></td>
 </tr></table>
 <div id="tabs">
   <ul>
     <li><a href="#buy">Buy</a></li>
     <li><a href="#pool">Pool</a></li>
+    <li><a href="#mint">Mint FUN</a></li>
   </ul>
   <div id="buy">
     <p><label for="multiplier">Muptiplier:</label>
@@ -723,15 +731,13 @@ $(function() { //document.onload
     title="If you win this lottery, the coins paid by you will be multiplied by this value and returned to you.">&nbsp;(1.05~1000)</p>
     <p>When the multiplier equals <span id="mulValue">2</span>, the maximum amount you can buy is <span id="maxAmount">--</span>, and your chance to win is <span id="chance">--</span>%.
     <p><label for="amount">Amount:</label>
-    <input id="amount" value="1"
-    title="How many BCH do you want to paid for this lottery ticket?" style="width: 120px">
+    <input id="amount" value="100"
+    title="How many FUN do you want to paid for this lottery ticket?" style="width: 120px">
     <span id="amountWarn" style="color:red"></span>
     </p>
-    <p>The fee you paid for this lottery is <span id="feeAmount">0.01</span>BCH. If you win, the reward is <span id="rewardAmount">--</span>BCH.</p>
+    <p>The fee you paid for this lottery is <span id="feeAmount">2.5</span>FUN. If you win, the reward is <span id="rewardAmount">--</span>FUN.</p>
     <button id="buyBtn" class="ui-button ui-widget ui-corner-all">Buy Lottery!</button>
-    <p>Note: the fee rate is 2.5%. <a href="javascript:" onclick="return switchDetail();">Detail&nbsp;<span id="updownArrow">⬇️</span></a></p>
-    <p id="feeDetail" style="display: none">2.5%=2%+0.5%. 2% goes to the pool's liquid provider, and 0.5% is used to buy back CLK in circulation. Currently, there have been <span id="buybackPoolTokenCount" style="font-weight: bold">--</span> BCH accumulated for buyback, which equals about <span id="CLKcanBeBought" style="font-weight: bold">--</span> CLK. Anyone can <a href="javascript:" onclick="return window.catsLuck.buybackAndBurn();">send a transaction</a> to buy CLK with these BCH and burn them.</p>
-
+    <p>Note: the fee rate is 2.5%.</p>
     <hr>
     <p><select name="filterMethod" id="filterMethod">
       <option selected="selected">Lotteries of All Addresses</option>
@@ -748,27 +754,32 @@ $(function() { //document.onload
 
   <div id="pool">
     <p>Current address: <span id="signerAddr"></span></p>
-    <p>You can deposit BCH into this lottery pool and earn fees. But if lottery buyers win their rewards, you will suffer some loss together with the pool.</p>
-    <p>You can withdraw BCH at least one hour after your deposit.</p>
-    <p>Now the lottery pool has <span id="totalShare">--</span> shares and each share equals <span id="catsPerShare">--</span> BCH (totally <span id="totalCoins"></span> BCH). You have <span id="userShare">--</span> shares in the pool (equaling <span id="userCoins">--</span> BCH).</p>
+    <p>You can deposit FUN into this lottery pool and earn fees. But if lottery buyers win their rewards, you will suffer some loss together with the pool.</p>
+    <p>You can withdraw FUN at least one hour after your deposit.</p>
+    <p>Now the lottery pool has <span id="totalShare">--</span> shares and each share equals <span id="catsPerShare">--</span> FUN (totally <span id="totalCoins"></span> FUN). You have <span id="userShare">--</span> shares in the pool (equaling <span id="userCoins">--</span> FUN).</p>
     <p><button id="depositBtn" class="ui-button ui-widget ui-corner-all">Deposit</button>
     <input id="depositAmount" value="1"
-    title="How many BCH do you want to deposit into this lottery pool?" style="width: 100px">BCH</p>
+    title="How many FUN do you want to deposit into this lottery pool?" style="width: 100px">FUN</p>
     
     <p><button id="withdrawBtn" class="ui-button ui-widget ui-corner-all">Withdraw</button>
     <input id="withdrawAmount" value="1"
-    title="How many BCH do you want to withdraw from this lottery pool?" style="width: 100px">BCH</p>
+    title="How many FUN do you want to withdraw from this lottery pool?" style="width: 100px">FUN</p>
     
     <p><button id="poolHisBtn" class="ui-button ui-widget ui-corner-all">Show My <span style="color: blue">Deposits(+)</span> and <span style="color: purple">Withdraws(-)</span></button></p>
     <table id="poolTable" style="display: none">
     </table>
-    <p id="totalEarningP" style="display: none">Your total earnings: <span id="totalEarning"></span> BCH.</p>
+    <p id="totalEarningP" style="display: none">Your total earnings: <span id="totalEarning"></span> FUN.</p>
   </div>
 
+  <div id="mint">
+    <p>FUN is a token with infinite supply. Its address: 0xFE2de72a416F79058d682612a3af652Aa7d02555</p>
+    <p>If you are a $CATS holder, you can click <a href="javascript:" onclick="return window.catsLuck.mint()">here</a> to mint FUN tokens which equal your $CATS balance (<span id="catsBalance">--</span>). Till now, totally <span id="funSupply">--</span> FUN have been minted.</p>
+    <p>Please let your wallet <a href="javascript:" onclick="return window.catsLuck.watchFUN();">watch FUN</a>.</p>
+  </div>
 </div>
 
 <div id="pendingRewardDlg" title="Get Pending Reward" style="display: none">
-  <p>You have a pending reward of <b id="pendingRewardAmount"></b> BCH. Please receive it!</p>
+  <p>You have a pending reward of <b id="pendingRewardAmount"></b> FUN. Please receive it!</p>
 </div>
  
 <div id="warnDlg" title="Warning!" style="display: none">
