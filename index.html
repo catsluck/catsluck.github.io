@@ -30,6 +30,8 @@ td {
 <script>
 const catsPoolAddress = "0x659F04F36e90143fCaC202D4BC36C699C078fC98"
 const bchPoolAddress = "0x4d16fB4811cf8BF7a5d35397527A95911E122611"
+const flexusdPoolAddress = "0xC5bBdf3838BA468359a5a97523925350dfcc3599"
+const daoPoolAddress = "0x5BBAE609bd2e6E0c6c59401e59B5358F0C1D16b1"
 const funPoolAddress = "0xEE4CA132e07246a0066239923EB146816Bb2ee06"
 
 const ReadonlyABI = [
@@ -41,6 +43,8 @@ async function syncPoolSizes() {
 
   var catsPool = new ethers.Contract(catsPoolAddress, ReadonlyABI, provider)
   var funPool = new ethers.Contract(funPoolAddress, ReadonlyABI, provider)
+  var flexusdPool = new ethers.Contract(flexusdPoolAddress, ReadonlyABI, provider)
+  var daoPool = new ethers.Contract(daoPoolAddress, ReadonlyABI, provider)
   var bchPool = new ethers.Contract(bchPoolAddress, ReadonlyABI, provider)
 
   var [totalCATS, totalShare, userShareAndLockUntil] = await catsPool.info(bchPoolAddress)
@@ -50,6 +54,14 @@ async function syncPoolSizes() {
   var [totalBCH, totalShare, userShareAndLockUntil] = await bchPool.info(bchPoolAddress)
   var bchPoolSize = document.getElementById("bchPoolSize")
   bchPoolSize.innerText = (ethers.utils.formatUnits(totalBCH, 18)*1.0).toFixed(2)
+
+  var [totalFLEXUSD, totalShare, userShareAndLockUntil] = await flexusdPool.info(bchPoolAddress)
+  var flexusdPoolSize = document.getElementById("flexusdPoolSize")
+  flexusdPoolSize.innerText = (ethers.utils.formatUnits(totalFLEXUSD, 18)*1.0).toFixed(2)
+
+  var [totalDAO, totalShare, userShareAndLockUntil] = await daoPool.info(bchPoolAddress)
+  var daoPoolSize = document.getElementById("daoPoolSize")
+  daoPoolSize.innerText = (ethers.utils.formatUnits(totalDAO, 7)*1.0).toFixed(2)
 
   var [totalFUN, totalShare, userShareAndLockUntil] = await funPool.info(bchPoolAddress)
   var funPoolSize = document.getElementById("funPoolSize")
@@ -74,6 +86,10 @@ async function init() {
 	<td id="catsPoolSize"></td></tr>
 	<tr><td><img src="/img/BCH.jpg" style="height: 30px; width: auto"></td><td><a href="/bch" style="font-size: 18px">BCH</a></td>
 	<td id="bchPoolSize"></td></tr>
+	<tr><td><img src="/img/flexUSD.png" style="height: 30px; width: auto"></td><td><a href="/flexusd" style="font-size: 18px">FLEXUSD</a></td>
+	<td id="flexusdPoolSize"></td></tr>
+	<tr><td><img src="/img/DAO.png" style="height: 30px; width: auto"></td><td><a href="/dao" style="font-size: 18px">DAO</a></td>
+	<td id="daoPoolSize"></td></tr>
 	<tr><td><img src="/img/FUN.png" style="height: 30px; width: auto"></td><td><a href="/fun" style="font-size: 18px">FUN</a></td>
 	<td id="funPoolSize"></td></tr>
 </table>
