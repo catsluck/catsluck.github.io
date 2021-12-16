@@ -33,6 +33,8 @@ const bchPoolAddress = "0x4d16fB4811cf8BF7a5d35397527A95911E122611"
 const flexusdPoolAddress = "0xC5bBdf3838BA468359a5a97523925350dfcc3599"
 const daoPoolAddress = "0x5BBAE609bd2e6E0c6c59401e59B5358F0C1D16b1"
 const funPoolAddress = "0xEE4CA132e07246a0066239923EB146816Bb2ee06"
+const ebenPoolAddress = "0x404B74F4B945A51FCAcF3B86b28c248aBD9496eB"
+const mistPoolAddress = "0xFbc43093c71c960F26Eed32Ec73F3d096F02C053"
 
 const ReadonlyABI = [
 "function info(address addr) external view returns (uint, uint, uint)",
@@ -46,10 +48,12 @@ async function syncPoolSizes() {
   var flexusdPool = new ethers.Contract(flexusdPoolAddress, ReadonlyABI, provider)
   var daoPool = new ethers.Contract(daoPoolAddress, ReadonlyABI, provider)
   var bchPool = new ethers.Contract(bchPoolAddress, ReadonlyABI, provider)
+  var ebenPool = new ethers.Contract(ebenPoolAddress, ReadonlyABI, provider)
+  var mistPool = new ethers.Contract(mistPoolAddress, ReadonlyABI, provider)
 
   var [totalCATS, totalShare, userShareAndLockUntil] = await catsPool.info(bchPoolAddress)
   var catsPoolSize = document.getElementById("catsPoolSize")
-  catsPoolSize.innerText = (ethers.utils.formatUnits(totalCATS, 2)*1.0).toFixed(0)
+  catsPoolSize.innerText = (ethers.utils.formatUnits(totalCATS, 2)*1.0).toFixed(2)
 
   var [totalBCH, totalShare, userShareAndLockUntil] = await bchPool.info(bchPoolAddress)
   var bchPoolSize = document.getElementById("bchPoolSize")
@@ -65,7 +69,15 @@ async function syncPoolSizes() {
 
   var [totalFUN, totalShare, userShareAndLockUntil] = await funPool.info(bchPoolAddress)
   var funPoolSize = document.getElementById("funPoolSize")
-  funPoolSize.innerText = (ethers.utils.formatUnits(totalFUN, 8)*1.0).toFixed(0)
+  funPoolSize.innerText = (ethers.utils.formatUnits(totalFUN, 8)*1.0).toFixed(2)
+
+  var [totalEBEN, totalShare, userShareAndLockUntil] = await ebenPool.info(bchPoolAddress)
+  var ebenPoolSize = document.getElementById("ebenPoolSize")
+  ebenPoolSize.innerText = (ethers.utils.formatUnits(totalEBEN, 18)*1.0).toFixed(2)
+
+  var [totalMIST, totalShare, userShareAndLockUntil] = await mistPool.info(bchPoolAddress)
+  var mistPoolSize = document.getElementById("mistPoolSize")
+  mistPoolSize.innerText = (ethers.utils.formatUnits(totalMIST, 18)*1.0).toFixed(2)
 }
 
 async function init() {
@@ -92,6 +104,10 @@ async function init() {
 	<td id="daoPoolSize"></td></tr>
 	<tr><td><img src="/img/FUN.png" style="height: 30px; width: auto"></td><td><a href="/fun" style="font-size: 18px">FUN</a></td>
 	<td id="funPoolSize"></td></tr>
+	<tr><td><img src="/img/EBEN.png" style="height: 30px; width: auto"></td><td><a href="/eben" style="font-size: 18px">EBEN</a></td>
+	<td id="ebenPoolSize"></td></tr>
+	<tr><td><img src="/img/MIST.png" style="height: 30px; width: auto"></td><td><a href="/mist" style="font-size: 18px">MIST</a></td>
+	<td id="mistPoolSize"></td></tr>
 </table>
 </div>
  
