@@ -43,53 +43,70 @@ const ReadonlyABI = [
 ]
 
 async function syncPoolSizes() {
-  const provider = new ethers.providers.JsonRpcProvider("https://smartbch.fountainhead.cash/mainnet")
+  const provider = new ethers.providers.JsonRpcProvider("https://smartbch.fountainhead.cash/mainnet");
 
-  var catsPool = new ethers.Contract(catsPoolAddress, ReadonlyABI, provider)
-  var funPool = new ethers.Contract(funPoolAddress, ReadonlyABI, provider)
-  var flexusdPool = new ethers.Contract(flexusdPoolAddress, ReadonlyABI, provider)
-  var daoPool = new ethers.Contract(daoPoolAddress, ReadonlyABI, provider)
-  var bchPool = new ethers.Contract(bchPoolAddress, ReadonlyABI, provider)
-  var ebenPool = new ethers.Contract(ebenPoolAddress, ReadonlyABI, provider)
-  var mistPool = new ethers.Contract(mistPoolAddress, ReadonlyABI, provider)
-  var tangoPool = new ethers.Contract(tangoPoolAddress, ReadonlyABI, provider)
-  var lawPool = new ethers.Contract(lawPoolAddress, ReadonlyABI, provider)
-
+  (async function() {
+  var catsPool = new ethers.Contract(catsPoolAddress, ReadonlyABI, provider);
   var [totalCATS, totalShare, userShareAndLockUntil] = await catsPool.info(bchPoolAddress)
   var catsPoolSize = document.getElementById("catsPoolSize")
   catsPoolSize.innerText = (ethers.utils.formatUnits(totalCATS, 2)*1.0).toFixed(2)
+  })();
 
+  (async function() {
+  var bchPool = new ethers.Contract(bchPoolAddress, ReadonlyABI, provider);
   var [totalBCH, totalShare, userShareAndLockUntil] = await bchPool.info(bchPoolAddress)
   var bchPoolSize = document.getElementById("bchPoolSize")
   bchPoolSize.innerText = (ethers.utils.formatUnits(totalBCH, 18)*1.0).toFixed(2)
+  })();
 
+  (async function() {
+  var flexusdPool = new ethers.Contract(flexusdPoolAddress, ReadonlyABI, provider);
   var [totalFLEXUSD, totalShare, userShareAndLockUntil] = await flexusdPool.info(bchPoolAddress)
   var flexusdPoolSize = document.getElementById("flexusdPoolSize")
   flexusdPoolSize.innerText = (ethers.utils.formatUnits(totalFLEXUSD, 18)*1.0).toFixed(2)
+  })();
 
+  (async function() {
+  var daoPool = new ethers.Contract(daoPoolAddress, ReadonlyABI, provider);
   var [totalDAO, totalShare, userShareAndLockUntil] = await daoPool.info(bchPoolAddress)
   var daoPoolSize = document.getElementById("daoPoolSize")
   daoPoolSize.innerText = (ethers.utils.formatUnits(totalDAO, 7)*1.0).toFixed(2)
+  })();
 
+  (async function() {
+  var funPool = new ethers.Contract(funPoolAddress, ReadonlyABI, provider);
   var [totalFUN, totalShare, userShareAndLockUntil] = await funPool.info(bchPoolAddress)
   var funPoolSize = document.getElementById("funPoolSize")
   funPoolSize.innerText = (ethers.utils.formatUnits(totalFUN, 8)*1.0).toFixed(2)
+  })();
 
+  (async function() {
+  var ebenPool = new ethers.Contract(ebenPoolAddress, ReadonlyABI, provider);
   var [totalEBEN, totalShare, userShareAndLockUntil] = await ebenPool.info(bchPoolAddress)
   var ebenPoolSize = document.getElementById("ebenPoolSize")
   ebenPoolSize.innerText = (ethers.utils.formatUnits(totalEBEN, 18)*1.0).toFixed(2)
+  })();
 
+  (async function() {
+  var mistPool = new ethers.Contract(mistPoolAddress, ReadonlyABI, provider);
   var [totalMIST, totalShare, userShareAndLockUntil] = await mistPool.info(bchPoolAddress)
   var mistPoolSize = document.getElementById("mistPoolSize")
   mistPoolSize.innerText = (ethers.utils.formatUnits(totalMIST, 18)*1.0).toFixed(2)
+  })();
 
+  (async function() {
+  var tangoPool = new ethers.Contract(tangoPoolAddress, ReadonlyABI, provider);
   var [totalTANGO, totalShare, userShareAndLockUntil] = await tangoPool.info(bchPoolAddress)
   var tangoPoolSize = document.getElementById("tangoPoolSize")
   tangoPoolSize.innerText = (ethers.utils.formatUnits(totalTANGO, 18)*1.0).toFixed(2)
+  })();
 
+  (async function() {
+  var lawPool = new ethers.Contract(lawPoolAddress, ReadonlyABI, provider);
   var [totalLAW, totalShare, userShareAndLockUntil] = await lawPool.info(bchPoolAddress)
   var lawPoolSize = document.getElementById("lawPoolSize")
   lawPoolSize.innerText = (ethers.utils.formatUnits(totalLAW, 18)*1.0).toFixed(2)
+  })();
 }
 
 async function init() {
