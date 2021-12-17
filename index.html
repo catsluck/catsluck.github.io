@@ -35,6 +35,8 @@ const daoPoolAddress = "0x5BBAE609bd2e6E0c6c59401e59B5358F0C1D16b1"
 const funPoolAddress = "0xEE4CA132e07246a0066239923EB146816Bb2ee06"
 const ebenPoolAddress = "0x404B74F4B945A51FCAcF3B86b28c248aBD9496eB"
 const mistPoolAddress = "0xFbc43093c71c960F26Eed32Ec73F3d096F02C053"
+const tangoPoolAddress = "0x43A4a713e3248Ab6CB05EB9c817355Ea85E580Ca"
+const lawPoolAddress = "0x3F52E5e897AfC6e7BF8C6A4e88f86fc6B9Ce645b"
 
 const ReadonlyABI = [
 "function info(address addr) external view returns (uint, uint, uint)",
@@ -50,6 +52,8 @@ async function syncPoolSizes() {
   var bchPool = new ethers.Contract(bchPoolAddress, ReadonlyABI, provider)
   var ebenPool = new ethers.Contract(ebenPoolAddress, ReadonlyABI, provider)
   var mistPool = new ethers.Contract(mistPoolAddress, ReadonlyABI, provider)
+  var tangoPool = new ethers.Contract(tangoPoolAddress, ReadonlyABI, provider)
+  var lawPool = new ethers.Contract(lawPoolAddress, ReadonlyABI, provider)
 
   var [totalCATS, totalShare, userShareAndLockUntil] = await catsPool.info(bchPoolAddress)
   var catsPoolSize = document.getElementById("catsPoolSize")
@@ -78,6 +82,14 @@ async function syncPoolSizes() {
   var [totalMIST, totalShare, userShareAndLockUntil] = await mistPool.info(bchPoolAddress)
   var mistPoolSize = document.getElementById("mistPoolSize")
   mistPoolSize.innerText = (ethers.utils.formatUnits(totalMIST, 18)*1.0).toFixed(2)
+
+  var [totalTANGO, totalShare, userShareAndLockUntil] = await tangoPool.info(bchPoolAddress)
+  var tangoPoolSize = document.getElementById("tangoPoolSize")
+  tangoPoolSize.innerText = (ethers.utils.formatUnits(totalTANGO, 18)*1.0).toFixed(2)
+
+  var [totalLAW, totalShare, userShareAndLockUntil] = await lawPool.info(bchPoolAddress)
+  var lawPoolSize = document.getElementById("lawPoolSize")
+  lawPoolSize.innerText = (ethers.utils.formatUnits(totalLAW, 18)*1.0).toFixed(2)
 }
 
 async function init() {
@@ -108,6 +120,10 @@ async function init() {
 	<td id="ebenPoolSize"></td></tr>
 	<tr><td><img src="/img/MIST.png" style="height: 30px; width: auto"></td><td><a href="/mist" style="font-size: 18px">MIST</a></td>
 	<td id="mistPoolSize"></td></tr>
+	<tr><td><img src="/img/TANGO.png" style="height: 30px; width: auto"></td><td><a href="/tango" style="font-size: 18px">TANGO</a></td>
+	<td id="tangoPoolSize"></td></tr>
+	<tr><td><img src="/img/LAW.png" style="height: 30px; width: auto"></td><td><a href="/law" style="font-size: 18px">LAW</a></td>
+	<td id="lawPoolSize"></td></tr>
 </table>
 </div>
  
