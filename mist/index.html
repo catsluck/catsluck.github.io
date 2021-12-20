@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CatsLuck</title>
 <link rel="icon" href="/img/clk.png">
-<link rel="stylesheet" href="/jquery-ui.css">
+<link rel="stylesheet" href="/others/jquery-ui.css">
 <style>
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -26,9 +26,9 @@ td {
       0 0 5px lightyellow;
 }
 </style>
-<script src="/jquery-3.6.0.js" integrity="sha384-S58meLBGKxIiQmJ/pJ8ilvFUcGcqgla+mWH9EEKGm6i6rKxSTA2kpXJQJ8n7XK4w" crossorigin="anonymous"></script>
-<script src="/jquery-ui.js" integrity="sha384-cBRE6iZwT9o/buXdjHQ/TMfB7uovhk0R+i+mvd4V5Megxs9NuMohD10dapiJLXzK" crossorigin="anonymous"></script>
-<script type="text/javascript" integrity="sha384-TOrQOibRJLhwxzAdxn9pLj7Kx8mTIBrNfq6jSOiHrB519TUbe3z/d79TTvE0Pv6d" crossorigin="anonymous" src="/ethers-5.5.1.umd.min.js"></script>
+<script src="/others/jquery-3.6.0.js" integrity="sha384-S58meLBGKxIiQmJ/pJ8ilvFUcGcqgla+mWH9EEKGm6i6rKxSTA2kpXJQJ8n7XK4w" crossorigin="anonymous"></script>
+<script src="/others/jquery-ui.js" integrity="sha384-cBRE6iZwT9o/buXdjHQ/TMfB7uovhk0R+i+mvd4V5Megxs9NuMohD10dapiJLXzK" crossorigin="anonymous"></script>
+<script type="text/javascript" integrity="sha384-TOrQOibRJLhwxzAdxn9pLj7Kx8mTIBrNfq6jSOiHrB519TUbe3z/d79TTvE0Pv6d" crossorigin="anonymous" src="/others/ethers-5.5.1.umd.min.js"></script>
 <script>
 
 function detectEthereumProvider({ mustBeMetaMask = false, silent = false, timeout = 3000, } = {}) {
@@ -148,11 +148,11 @@ function goHome() {
 <script>
 const DefaultGasPrice = ethers.BigNumber.from("0x3e63fa64")
 const AllOnes = ethers.BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
-const daoAddress = "0xca0235058985fcC1839E9e37c10900a73C126708"
-const poolAddress = "0x5BBAE609bd2e6E0c6c59401e59B5358F0C1D16b1"
-const CoinDecimal = 7
-const DisplayDigits = 2
-const ShareDecimal = 7
+const mistAddress = "0x5fA664f69c2A4A3ec94FaC3cBf7049BD9CA73129"
+const poolAddress = "0xFbc43093c71c960F26Eed32Ec73F3d096F02C053"
+const CoinDecimal = 18
+const DisplayDigits = 4
+const ShareDecimal = 18
 const SmartBCHChainId = 10000
 const DefaultStartHeight = 1800000;
 
@@ -328,14 +328,14 @@ class CatsLuck4FlexUSD {
   async approve() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
-    const tokenContract = new ethers.Contract(daoAddress, Erc20ABI, provider).connect(signer)
+    const tokenContract = new ethers.Contract(mistAddress, Erc20ABI, provider).connect(signer)
     await tokenContract.approve(poolAddress, ethers.utils.parseUnits("1", 36))
   }
 
   async buy() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
-    const tokenContract = new ethers.Contract(daoAddress, Erc20ABI, provider).connect(signer)
+    const tokenContract = new ethers.Contract(mistAddress, Erc20ABI, provider).connect(signer)
     const amount = $("#amount").val()*1.0
     const maxAmount = $("#maxAmount").text()*1.0
     console.log("maxAmount", maxAmount)
@@ -416,7 +416,7 @@ class CatsLuck4FlexUSD {
   async deposit() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
-    const tokenContract = new ethers.Contract(daoAddress, Erc20ABI, provider).connect(signer)
+    const tokenContract = new ethers.Contract(mistAddress, Erc20ABI, provider).connect(signer)
     const depositAmount = $("#depositAmount").val()*1.0
     const signerAddr = await signer.getAddress()
     const balanceBN = await tokenContract.balanceOf(signerAddr)
@@ -537,7 +537,7 @@ class CatsLuck4FlexUSD {
   showPoolOperations(logs) {
     var poolTable = $("#poolTable")
     poolTable.show()
-    poolTable.html(`<tr><th>Time</th><th>DAO</th><th>txid</th></tr>`)
+    poolTable.html(`<tr><th>Time</th><th>MIST</th><th>txid</th></tr>`)
     var totalInvest = 0
     for(var i=0; i<logs.length; i++) {
       var log = logs[i]
@@ -741,7 +741,7 @@ $(function() { //document.onload
 <body>
 <table style="margin: auto;"><tr>
 <td><a href="/"><img style="height: 80px; width: auto;" src="/img/catsluck.jpg"/></a></td>
-<td style="width: 55px"><img style="height: 55px; width: auto; position: relative; top: 0px; left: 0px" src="/img/DAO.png"/></td>
+<td style="width: 55px"><img style="height: 55px; width: auto; position: relative; top: 0px; left: 0px" src="/img/MIST.png"/></td>
 </tr></table>
 <!-- GTranslate: https://gtranslate.io/ -->
 <a href="#" onclick="doGTranslate('en|en');return false;" title="English" class="gflag nturl" style="background-position:-0px -0px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="English" /></a><a href="#" onclick="doGTranslate('en|fr');return false;" title="French" class="gflag nturl" style="background-position:-200px -100px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="French" /></a><a href="#" onclick="doGTranslate('en|de');return false;" title="German" class="gflag nturl" style="background-position:-300px -100px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="German" /></a><a href="#" onclick="doGTranslate('en|it');return false;" title="Italian" class="gflag nturl" style="background-position:-600px -100px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="Italian" /></a><a href="#" onclick="doGTranslate('en|pt');return false;" title="Portuguese" class="gflag nturl" style="background-position:-300px -200px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="Portuguese" /></a><a href="#" onclick="doGTranslate('en|ru');return false;" title="Russian" class="gflag nturl" style="background-position:-500px -200px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="Russian" /></a><a href="#" onclick="doGTranslate('en|es');return false;" title="Spanish" class="gflag nturl" style="background-position:-600px -200px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="Spanish" /></a>
@@ -768,13 +768,13 @@ eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
     <p>When the multiplier equals <span id="mulValue">2</span>, the maximum amount you can buy is <span id="maxAmount">--</span>, and your chance to win is <span id="chance">--</span>%.
     <p><label for="amount">Amount:</label>
     <input id="amount" value="1"
-    title="How many DAO do you want to paid for this lottery ticket?" style="width: 120px">
+    title="How many MIST do you want to paid for this lottery ticket?" style="width: 120px">
     <span id="amountWarn" style="color:red"></span>
     </p>
-    <p>The fee you paid for this lottery is <span id="feeAmount">0.01</span>DAO. If you win, the reward is <span id="rewardAmount">--</span>DAO.</p>
+    <p>The fee you paid for this lottery is <span id="feeAmount">0.01</span>MIST. If you win, the reward is <span id="rewardAmount">--</span>MIST.</p>
     <button id="buyBtn" class="ui-button ui-widget ui-corner-all">Buy Lottery!</button>
     <p>Note: the fee rate is 2.5%. <a href="javascript:" onclick="return switchDetail();">Detail&nbsp;<span id="updownArrow">⬇️</span></a></p>
-    <p id="feeDetail" style="display: none">2.5%=2%+0.5%. 2% goes to the pool's liquid provider, and 0.5% is used to buy back CLK in circulation. Currently, there have been <span id="buybackPoolTokenCount" style="font-weight: bold">--</span> DAO accumulated for buyback, which equals about <span id="CLKcanBeBought" style="font-weight: bold">--</span> CLK. Anyone can <a href="javascript:" onclick="return window.catsLuck.buybackAndBurn();">send a transaction</a> to buy CLK with these DAO and burn them.</p>
+    <p id="feeDetail" style="display: none">2.5%=2%+0.5%. 2% goes to the pool's liquid provider, and 0.5% is used to buy back CLK in circulation. Currently, there have been <span id="buybackPoolTokenCount" style="font-weight: bold">--</span> MIST accumulated for buyback, which equals about <span id="CLKcanBeBought" style="font-weight: bold">--</span> CLK. Anyone can <a href="javascript:" onclick="return window.catsLuck.buybackAndBurn();">send a transaction</a> to buy CLK with these MIST and burn them.</p>
 
     <hr>
     <p><select name="filterMethod" id="filterMethod">
@@ -792,27 +792,27 @@ eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 
   <div id="pool">
     <p>Current address: <span id="signerAddr"></span></p>
-    <p>You can deposit DAO into this lottery pool and earn fees. But if lottery buyers win their rewards, you will suffer some loss together with the pool.</p>
-    <p>You can withdraw DAO at least one hour after your deposit.</p>
-    <p>Now the lottery pool has <span id="totalShare">--</span> shares and each share equals <span id="catsPerShare">--</span> DAO (totally <span id="totalCoins"></span> DAO). You have <span id="userShare">--</span> shares in the pool (equaling <span id="userCoins">--</span> DAO).</p>
+    <p>You can deposit MIST into this lottery pool and earn fees. But if lottery buyers win their rewards, you will suffer some loss together with the pool.</p>
+    <p>You can withdraw MIST at least one hour after your deposit.</p>
+    <p>Now the lottery pool has <span id="totalShare">--</span> shares and each share equals <span id="catsPerShare">--</span> MIST (totally <span id="totalCoins"></span> MIST). You have <span id="userShare">--</span> shares in the pool (equaling <span id="userCoins">--</span> MIST).</p>
     <p><button id="depositBtn" class="ui-button ui-widget ui-corner-all">Deposit</button>
     <input id="depositAmount" value="1"
-    title="How many DAO do you want to deposit into this lottery pool?" style="width: 100px">DAO</p>
+    title="How many MIST do you want to deposit into this lottery pool?" style="width: 100px">MIST</p>
     
     <p><button id="withdrawBtn" class="ui-button ui-widget ui-corner-all">Withdraw</button>
     <input id="withdrawAmount" value="1"
-    title="How many DAO do you want to withdraw from this lottery pool?" style="width: 100px">DAO</p>
+    title="How many MIST do you want to withdraw from this lottery pool?" style="width: 100px">MIST</p>
     
     <p><button id="poolHisBtn" class="ui-button ui-widget ui-corner-all">Show My <span style="color: blue">Deposits(+)</span> and <span style="color: purple">Withdraws(-)</span></button></p>
     <table id="poolTable" style="display: none">
     </table>
-    <p id="totalEarningP" style="display: none">Your total earnings: <span id="totalEarning"></span> DAO.</p>
+    <p id="totalEarningP" style="display: none">Your total earnings: <span id="totalEarning"></span> MIST.</p>
   </div>
 
 </div>
 
 <div id="pendingRewardDlg" title="Get Pending Reward" style="display: none">
-  <p>You have a pending reward of <b id="pendingRewardAmount"></b> DAO. Please receive it!</p>
+  <p>You have a pending reward of <b id="pendingRewardAmount"></b> MIST. Please receive it!</p>
 </div>
  
 <div id="warnDlg" title="Warning!" style="display: none">
