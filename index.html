@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CatsLuck</title>
 <link rel="icon" href="img/clk.png">
+<link rel="stylesheet" href="others/jquery-ui.css">
 <style>
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -26,6 +27,8 @@ td {
       0 0 5px lightyellow;
 }
 </style>
+<script src="others/jquery-3.6.0.js" integrity="sha384-S58meLBGKxIiQmJ/pJ8ilvFUcGcqgla+mWH9EEKGm6i6rKxSTA2kpXJQJ8n7XK4w" crossorigin="anonymous"></script>
+<script src="others/jquery-ui.js" integrity="sha384-cBRE6iZwT9o/buXdjHQ/TMfB7uovhk0R+i+mvd4V5Megxs9NuMohD10dapiJLXzK" crossorigin="anonymous"></script>
 <script type="text/javascript" integrity="sha384-TOrQOibRJLhwxzAdxn9pLj7Kx8mTIBrNfq6jSOiHrB519TUbe3z/d79TTvE0Pv6d" crossorigin="anonymous" src="others/ethers-5.5.1.umd.min.js"></script>
 <script>
 const catsPoolAddress = "0x659F04F36e90143fCaC202D4BC36C699C078fC98"
@@ -37,13 +40,27 @@ const ebenPoolAddress = "0x404B74F4B945A51FCAcF3B86b28c248aBD9496eB"
 const mistPoolAddress = "0xFbc43093c71c960F26Eed32Ec73F3d096F02C053"
 const tangoPoolAddress = "0x43A4a713e3248Ab6CB05EB9c817355Ea85E580Ca"
 const lawPoolAddress = "0x3F52E5e897AfC6e7BF8C6A4e88f86fc6B9Ce645b"
+const clkAddress = "0x659F04F36e90143fCaC202D4BC36C699C078fC98"
 
 const ReadonlyABI = [
 "function info(address addr) external view returns (uint, uint, uint)",
 ]
 
+const TokenABI = [
+"function totalSupply() external view returns (uint)",
+"function balanceOf(address account) external view returns (uint256)",
+]
+
 async function syncPoolSizes() {
   const provider = new ethers.providers.JsonRpcProvider("https://smartbch.fountainhead.cash/mainnet");
+  const tokenContract = new ethers.Contract(clkAddress, TokenABI, provider);
+  
+  var clkSupply = await tokenContract.totalSupply();
+  var totalBurnt = await tokenContract.balanceOf("0x0000000000000000000000000000000000000001");
+  clkSupply = clkSupply.sub(totalBurnt)
+  const amt = Math.floor(ethers.utils.formatUnits(clkSupply)*1.0);
+  document.getElementById("circulatingCLK").innerText = amt;
+  document.getElementById("circulatingCLK2").innerText = amt;
 
   (async function() {
   var catsPool = new ethers.Contract(catsPoolAddress, ReadonlyABI, provider);
@@ -109,6 +126,13 @@ async function syncPoolSizes() {
   })();
 }
 
+function openAnnouncement() {
+      $("#announceDlg").dialog({modal: true, buttons: {Ok: function(){
+        $(this).dialog("close")
+      }}})
+      return false;
+}
+
 async function init() {
   await syncPoolSizes()
   window.setInterval(async function() {
@@ -121,6 +145,10 @@ async function init() {
 <center><img style="height: 80px; width: auto;" src="img/catsluck.jpg"/></center>
 <h2 style="text-align: center">Game & Stake Your Tokens. Have Fun!</h2>
 <h2 align="center"><a href="guess/" style="color: red">Bet On Events!</a></h2>
+<h4 style="width: 390px; margin: 0 auto;"><center>
+<a href="javascript:" onclick="return openAnnouncement();">Announcement (1st Mar 2022)</a>
+</center></h4>
+<br>
 <div>
 <table style="margin: auto">
 	<tr style="font-size: 18px"><th></th><th>POOL</th><th>&nbsp;&nbsp;&nbsp;Total Amount</th><th></th></tr>
@@ -142,17 +170,27 @@ async function init() {
 	<td id="tangoPoolSize"></td><td></td></tr>
 	<tr><td><img src="img/LAW.png" style="height: 30px; width: auto"></td><td><a href="law" style="font-size: 18px">LAW</a></td>
 	<td id="lawPoolSize"></td><td></td></tr>
-</table>
-<h2 align="center">New Games</h2>
+</table><br>
 <p align="center"><a href="blindbox/cats.html" style="font-size: 18px"> <img src="img/blindbox.gif" width="60px"></a></p>
-<p align="center"><a href="dice/cats.html" style="font-size: 18px">Dice</a></p>
-<p align="center"><a href="rock-paper-scissors/cats.html" style="font-size: 18px">rock-paper-scissors </a></p>
-<p style="width: 300px; margin: 0 auto">💡&nbsp;This is a static website. In case of the hosting service provider's breakdown, its <a target="_blank" href="https://crustwebsites.net/ipfs/QmcmuwahFkGBf4285eTSZLmFhW23iX9CRTuhGTuRvrJzzS">IPFS version</a> is also provided. Please bookmark this link for emergency.<br>
+<center style="width: 300px; margin: 0 auto"><a target="_blank" href="https://crustwebsites.net/ipfs/QmcmuwahFkGBf4285eTSZLmFhW23iX9CRTuhGTuRvrJzzS">IPFS version</a>&nbsp;&nbsp;&nbsp;
+<a target="_black" href="https://github.com/catsluck/catsluck/tree/main/audit">Audit Report</a>
 <br>
-Audit Report: <a target="_black" href="https://github.com/catsluck/catsluck/tree/main/audit">https://github.com/catsluck/catsluck/tree/main/audit</a>
-</p>
+CLK in Circulation: <span style="color: red" id="circulatingCLK2">--</span></center>
 </div>
  
+<div id="announceDlg" title="Announcement" style="display: none">
+<p>
+CLK stopped minting at 1st Mar 2022 00:00:00 GMT. Now the number of CLK in circulation is <span style="color: red" id="circulatingCLK">--</span>, which decreases every day because of burnt CLK.<br><br>
+Catsluck's lottery game will soon be updated. The new features:<br>
+&nbsp;1. Your share in the pool can be transferred to others as ERC20 tokens.<br>
+&nbsp;2. Referers will get rewards.<br>
+&nbsp;3. Use Dutch auction to buy back CLK.<br>
+&nbsp;4. Permissionless creation of new pools.<br>
+&nbsp;5. Betting on the $CATS pool will mint a new token, which is different from CLK. Stay tuned for more information.<br><br>
+One more thing: the requirement for listing games betting on events is lowered to 1 million $CATS or 0.1% of total circulating CLK.
+</p>
+</div>
+
 <script>
 init();
 </script>
