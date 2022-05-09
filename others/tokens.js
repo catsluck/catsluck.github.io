@@ -1,0 +1,948 @@
+window.TOKENS = {
+  "KI": {
+    "address": "0x4524cE998c2551CdA6d5763E0AD74153059B6207",
+    "desc": "Koingfu connects blockchains into the internet of value.",
+    "image": "https://marketcap.cash/ki.png",
+    "name": "Koingfu",
+    "symbol": "KI",
+    "websites": ["https://koingfu.com"],
+    "telegram": "https://t.me/+Hi_qG5A59IhiZGQx"
+  },
+  "ARG": {
+    "address": "0x675E1d6FcE8C7cC091aED06A68D079489450338a",
+    "image": "https://marketcap.cash/arg.png",
+    "name": "Bitcoin Cash Argentina",
+    "symbol": "ARG",
+    "websites": ["https://bitcoincashargentina.com"]
+  },
+  "AXIEBCH": {
+    "address": "0x3d13DaFcCA3a188DB340c81414239Bc2be312Ec9",
+    "desc": "AxieBCH is the first & only Play-2-Earn gaming guild based exclusively on Bitcoin Cash as guild members payout cryptocurrency, and SmartBCH token $AXIEBCH as an investment & reward vehicle. Gaming guilds play an important role in the Play-2-Earn gaming industry. They allow new players to start exploring the games without paying high upfront costs. As guilds are interested to maximize their players’ earning potential, they also offer some valuable additional services to their members: coaching, teams upgrade, e-sport events.",
+    "image": "https://marketcap.cash/axiebch.png",
+    "name": "AxieBCH",
+    "symbol": "AXIEBCH",
+    "websites": ["https://axiebch.com/"]
+  },
+  "BCH": {
+    "image": "https://marketcap.cash/bch.svg",
+    "name": "Bitcoin Cash",
+    "symbol": "BCH"
+  },
+  "BWB": {
+    "name": "Bismuth Win Bi",
+    "address": "0x2E1da8Eb00CD1FF9B201f51e3705D87e06313881",
+    "symbol": "BWB",
+    "image": "https://marketcap.cash/bwb.png",
+    "websites": ["https://biwinbi.github.io/web/"],
+    "telegram": "https://t.me/BWBtothemoon",
+    "twitter": "https://twitter.com/BWBtothemoon"
+  },
+  "CANDYMAN": {
+    "address": "0x0D8b355f9CEDeB612f2df4B39CdD87059A244567",
+    "image": "https://marketcap.cash/candyman.png",
+    "name": "CandyMan",
+    "symbol": "CANDYMAN",
+    "websites": ["https://istmeprincess.github.io/CandyMan/"],
+    "telegram": "https://t.me/CandyManToken"
+  },
+  "CATS": {
+    "address": "0x265bD28d79400D55a1665707Fa14A72978FA6043",
+    "desc": "CashCats aims to be an extension of the BCH peer-to-peer electronic cash movement & a mascot for the BCH community. We love $CATS! Our goal is to show as much love & respect as possible to everyone around the world and spread $CATS and introduce SmartBCH to as many people as possible!",
+    "image": "https://marketcap.cash/cashcats.jpg",
+    "name": "CashCats",
+    "symbol": "CATS",
+    "websites": ["https://cashcats.org/"],
+    "twitter": "https://twitter.com/CashCatsBCH",
+    "telegram": "https://t.me/CashCats"
+  },
+  "CHEESE": {
+    "address": "0x09A4CDb1569563fF277aC457cED35fe2551aEC1D",
+    "desc": "Cheese is a cheesy fun token. For all lovers of Cheese :)",
+    "image": "https://marketcap.cash/cheese.png",
+    "name": "Cheese",
+    "symbol": "CHEESE",
+    "websites": ["https://adnjoo.github.io/smartcheese"],
+    "twitter": "https://twitter.com/smartcheesebch",
+    "telegram": "https://t.me/smartcheesecoin"
+  },
+  "DONER": {
+    "name": "Döner",
+    "address": "0x14d9337f86d51dcad0d28f6439e00039e251b592",
+    "desc": "DONER is the official fan, art and experimental research and development token for Döner Tallrik collective. DONER has no intrinsic value.",
+    "symbol": "DONER",
+    "image": "https://marketcap.cash/doner.png",
+    "telegram": "https://t.me/donertallrik",
+    "twitter": "https://twitter.com/donertallrik",
+    "websites": [
+      "https://donertallrik.web.app",
+      "https://opensea.io/collection/doner",
+      "https://soundcloud.com/user-688920568-653173414"
+    ]
+  },
+  "EBEN": {
+    "address": "0x77CB87b57F54667978Eb1B199b28a0db8C8E1c0B",
+    "desc": "The very first DEX on SmartBCH.",
+    "image": "https://marketcap.cash/benswap.png",
+    "name": "Green Ben",
+    "symbol": "EBEN",
+    "websites": ["https://benswap.cash"],
+    "twitter": "https://twitter.com/BenTokenFinanc1",
+    "telegram": "https://t.me/bentokenfinance"
+  },
+  "FATCAT": {
+    "address": "0xF4b10fcC5C22C9E6746a8f4DAc07A59e79ef947A",
+    "desc": "Those who love cats, will love $FATCAT. The goal of $FATCAT is, to bring as many people to smartBCH as possible. And that should happen sweet and fluffy. In addition to an NFT, other things will be created for and with $FATCAT in order, to make $FATCAT usable and stable in the future.",
+    "image": "https://marketcap.cash/fatcat.png",
+    "name": "FATCAT",
+    "symbol": "FATCAT",
+    "websites": ["https://fatcattoken.github.io/"],
+    "twitter": "https://twitter.com/FATCAT_sBCH",
+    "telegram": "https://t.me/FATCATBCH"
+  },
+  "FLEXUSD": {
+    "address": "0x7b2B3C5308ab5b2a1d9a94d20D35CCDf61e05b72",
+    "image": "https://marketcap.cash/flexusd.png",
+    "name": "flexUSD",
+    "symbol": "FLEXUSD",
+    "websites": ["https://coinflex.com/flexUSD"],
+    "twitter": "https://twitter.com/coinflexdotcom",
+    "telegram": "https://t.me/coinflex_EN"
+  },
+  "FLEX": {
+    "name": "FLEX Coin",
+    "address": "0x98Dd7eC28FB43b3C4c770AE532417015fa939Dd3",
+    "symbol": "FLEX",
+    "image": "https://marketcap.cash/flex.png",
+    "website": "https://coinflex.com/flex-coin/",
+    "telegram": "https://t.me/coinflex_EN",
+    "twitter": "https://twitter.com/coinflexdotcom"
+  },
+  "HAM": {
+    "address": "0x252fd94f3Fb53D3D62F4FEc708501ACd59A57e52",
+    "image": "https://marketcap.cash/ham.png",
+    "name": "HAM Token",
+    "symbol": "HAM",
+    "telegram": "https://t.me/HAM_Token_Chat",
+    "websites": ["https://ham-token.website2.me/"]
+  },
+  "HODL": {
+    "address": "0xB24D7763516bca9656779d760be9a32490f46E27",
+    "image": "https://marketcap.cash/hodl.png",
+    "name": "HODL",
+    "symbol": "HODL"
+  },
+  "HOLY": {
+    "address": "0xA942Ba6E9Aab4b67d73572fb0e3BD5D25d5414ED",
+    "image": "https://marketcap.cash/holy.jpg",
+    "name": "Jesus Piece",
+    "symbol": "HOLY",
+    "telegram": "https://t.me/HOLYJesusPiece",
+    "github": "https://github.com/stockleezy",
+    "websites": ["https://jesuspiece.cash"],
+    "desc": "Humanitarian Token to Enlighten the Masses"
+  },
+  "HONK": {
+    "address": "0xF2d4D9c65C2d1080ac9e1895F6a32045741831Cd",
+    "desc": "HONK World represents the clown world we are all living in today. HONK token is one of the oldest tokens on BCH. Now migrated from SLP to SmartBCH, its scope has expanded to HONK World, which includes farming and NFTs. HONK World and its HONK token aim to bring more fun into crypto and the SmartBCH ecosystem!",
+    "image": "https://marketcap.cash/honk.svg",
+    "name": "Honk",
+    "symbol": "HONK",
+    "telegram": "https://t.me/honkhonktoken",
+    "websites": ["https://honk.cash"],
+    "discord": "https://discord.gg/qdHe8yCAB2",
+    "twitter": "https://twitter.com/World_of_Honk"
+  },
+  "KITTEN": {
+    "address": "0x7ebeadb95724a006afaf2f1f051b13f4ebebf711",
+    "image": "https://marketcap.cash/kitten.png",
+    "name": "CashKitten",
+    "symbol": "KITTEN",
+    "twitter": "https://twitter.com/CashKitten_BCH",
+    "telegram": "https://t.me/CashKitten_BCH"
+  },
+  "KNUTH": {
+    "address": "0xc70c7718C7f1CCd906534C2c4a76914173EC2c44",
+    "image": "https://marketcap.cash/knuth.png",
+    "name": "Knuth",
+    "symbol": "KNUTH",
+    "websites": ["https://kth.cash/"]
+  },
+  "LIGHTNING": {
+    "address": "0xc2100c9486B320B6db2Fc6D1f2BeAAB713fF069D",
+    "image": "https://marketcap.cash/lightning.png",
+    "name": "Lightning",
+    "symbol": "LIGHTNING"
+  },
+  "MAZE": {
+    "address": "0x481De06DCA0198844faA36FCa04Db364e5c2f86C",
+    "image": "https://marketcap.cash/maze.png",
+    "name": "MAZE",
+    "symbol": "MAZE",
+    "telegram": "https://t.me/mazetokens",
+    "github": "https://github.com/mazetoken",
+    "websites": ["https://mazetoken.github.io"],
+    "desc": "A mineable (proof-of-work) appreciation token. Let`s create!"
+  },
+  "MGOT": {
+    "address": "0x7DF65F158126898725f262378538B60db543C11A",
+    "image": "https://marketcap.cash/mgot.png",
+    "name": "MGOT",
+    "symbol": "MGOT"
+  },
+  "ORB": {
+    "address": "0xff3ed63bf8bc9303ea0a7e1215ba2f82d569799e",
+    "image": "https://marketcap.cash/orb.png",
+    "name": "ORB",
+    "symbol": "ORB",
+    "websites": ["https://enter-the-sphere.com/"]
+  },
+  "POTA": {
+    "address": "0xb5b1939ef0a3743d0ae9282dba62312b614a5ac0",
+    "desc": "Potato Coin is a coin on SmartBCH with extremely low fees and extremely high memes",
+    "image": "https://marketcap.cash/pota.png",
+    "name": "Potato Coin",
+    "symbol": "POTA",
+    "telegram": "https://t.me/PotatoCoinBCH",
+    "websites": ["https://potatoco.in"]
+  },
+  "SHIBBCH": {
+    "address": "0x2f309b9d47b1ce7f0ec30a26bab2deab8c4ea5e9",
+    "image": "https://marketcap.cash/shibbch.png",
+    "name": "Shiba BCH",
+    "symbol": "SHIBBCH",
+    "telegram": "https://t.me/ShibaBCHcom",
+    "websites": ["https://shibabch.com"],
+    "twitter": "https://twitter.com/ShibaBCH"
+  },
+  "SPICE": {
+    "address": "0xe11829a7d5d8806bb36e118461a1012588fafd89",
+    "image": "https://marketcap.cash/spice.png",
+    "name": "SPICE",
+    "symbol": "SPICE",
+    "websites": ["https://spicetoken.org/"]
+  },
+  "TEEF": {
+    "address": "0xe691221eD15BA1E2491B552db955191789d9a8d9",
+    "image": "https://marketcap.cash/teef.png",
+    "name": "TEEF Token",
+    "symbol": "TEEF",
+    "websites": ["https://www.teefpowder.com/p/teef-token.html"],
+    "desc": "Product token for Teefpowder.com"
+  },
+  "UATX": {
+    "address": "0xffa2394b61d3de16538a2bbf3491297cc5a7c79a",
+    "image": "https://marketcap.cash/uatx.jpg",
+    "name": "UatX Token",
+    "symbol": "UATX",
+    "websites": ["https://www.uat.cash"]
+  },
+  "VANDALS": {
+    "address": "0x2a886b947d5a8f0e09408C9069914Fa44C06ed7e",
+    "image": "https://marketcap.cash/vandals.png",
+    "name": "Vandals",
+    "symbol": "VANDALS",
+    "telegram": "https://t.me/mazetokens",
+    "github": "https://github.com/mazetoken/vandals",
+    "websites": ["https://vandalstoken.onuniverse.com/"],
+    "desc": "Digital arts appreciation token. Stay away! Rude`n Rough."
+  },
+  "WRS": {
+    "address": "0x445B3712A09f8102Dd0c1ffb6B3b0dE4D3B643b7",
+    "image": "https://marketcap.cash/thewirelesstoken.png",
+    "name": "The Wireless Token",
+    "symbol": "WRS"
+  },
+  "ZOMBIE": {
+    "address": "0x80453ACDfE0073D6743B27D72e06F48777EeAd80",
+    "image": "https://marketcap.cash/zombie.png",
+    "name": "Zombie",
+    "symbol": "ZOMBIE",
+    "telegram": "https://t.me/mazetokens",
+    "github": "https://github.com/mazetoken/zombie",
+    "websites": ["https://zombies.onuniverse.com"],
+    "desc": "Satire and appreciation token. No bullshit! Just zombie."
+  },
+  "sBUSD": {
+    "address": "0x9288df32951386A8254aEaF80a66B78cCaf75b82",
+    "desc": "Smart BUSD (sBUSD) is the first stablecoin in the history of smartBCH! Using sBUSD you can move over any assets you have on the Binance Smart Chain to the Bitcoin Cash Smart Chain (smartBCH). To start this process please DM @Kain_niaK. The cool thing about moving over BUSD to sBUSD is that your BUSD starts generating your interest. Currently between 3.6% to 7% a year When you swap back from sBUSD to BUSD you get your portion of this interest! Please read the whitepaper —> https://sbusd.cash/Smart_BUSD_whitepaper.pdf",
+    "image": "https://marketcap.cash/sbusd.jpg",
+    "name": "Smart BUSD",
+    "symbol": "sBUSD",
+    "websites": ["https://sbusd.cash/"]
+  },
+  "sVNT": {
+    "address": "0x8f66C730e383Bb412a9a3cB58178BAb2f432d194",
+    "image": "https://marketcap.cash/svnt.png",
+    "name": "sVNT",
+    "symbol": "sVNT",
+    "websites": ["https://svntfarm.netlify.app/farms"]
+  },
+  "LAW": {
+    "address": "0x0b00366fBF7037E9d75E4A569ab27dAB84759302",
+    "image": "https://marketcap.cash/law.png",
+    "name": "LAW",
+    "symbol": "LAW",
+    "telegram": "https://t.me/BlockNGGlobal",
+    "websites": ["https://blockng.money/?r=marketcapcash"]
+  },
+  "MIST": {
+    "address": "0x5fA664f69c2A4A3ec94FaC3cBf7049BD9CA73129",
+    "image": "https://marketcap.cash/mist.png",
+    "name": "MIST",
+    "symbol": "MIST",
+    "websites": ["https://app.mistswap.fi/"],
+    "discord": "https://discord.gg/xFTnQEzu9T",
+    "twitter": "https://twitter.com/mistswapdex"
+  },
+  "XMIST": {
+    "address": "0xc41c680c60309d4646379ed62020c534eb67b6f4",
+    "image": "https://marketcap.cash/xmist.png",
+    "name": "MISTbar",
+    "symbol": "XMIST",
+    "websites": ["https://app.mistswap.fi/"],
+    "discord": "https://discord.gg/xFTnQEzu9T",
+    "twitter": "https://twitter.com/mistswapdex"
+  },
+  "KONRA": {
+    "name": "Konra",
+    "address": "0x4F1480ba79F7477230ec3b2eCc868E8221925072",
+    "symbol": "KONRA",
+    "image": "https://marketcap.cash/konra.jpg",
+    "websites": ["http://konratoken.com"],
+    "twitter": "https://twitter.com/Konratoken"
+  },
+  "MILK": {
+    "name": "MILK",
+    "address": "0xc8E09AEdB3c949a875e1FD571dC4b3E48FB221f0",
+    "desc": "MILK is the token that powers the MuesliSwap ecosystem. Just like real milk, MILK has many useful benefits - Rewards: Receive MILK from farming on the exchange - Governance: Vote on proposals for MuesliSwap - Growth: Support future growth of the Muesli ecosystem",
+    "symbol": "MILK",
+    "image": "https://marketcap.cash/milk.png",
+    "telegram": "https://t.me/MuesliSwapofficial",
+    "websites": ["https://bch.muesliswap.com/"],
+    "twitter": "https://twitter.com/MuesliSwapTeam"
+  },
+  "BPAD": {
+    "name": "BCHPad",
+    "desc": "BCHPad is a DeFi Launchpad for Smart Bitcoin Cash",
+    "address": "0x9192940099fDB2338B928DE2cad9Cd1525fEa881",
+    "symbol": "BPAD",
+    "image": "https://marketcap.cash/bpad.png",
+    "telegram": "https://t.me/bchpad",
+    "websites": ["https://app.bchpad.cash/"],
+    "twitter": "https://twitter.com/bchpad"
+  },
+  "JOY": {
+    "name": "Joystick",
+    "address": "0x6732E55Ac3ECa734F54C26Bd8DF4eED52Fb79a6E",
+    "symbol": "JOY",
+    "desc": "JOY is the native reward and governance token of Joystick.club, the first play to earn arcade on SmartBCH. Play games and earn JOY tokens at smart.joystick.club. Save up your JOY tokens to mint NFT Prizes which you can use to stake and earn yield and enhance your gameplay and rewards per play.",
+    "image": "https://marketcap.cash/joy.png",
+    "telegram": "https://t.me/joystickclub",
+    "websites": ["https://joystick.club"],
+    "twitter": "https://twitter.com/joystickclub"
+  },
+  "CLY": {
+    "name": "Celery",
+    "address": "0x7642Df81b5BEAeEb331cc5A104bd13Ba68c34B91",
+    "symbol": "CLY",
+    "image": "https://marketcap.cash/cly.png",
+    "websites": [
+      "https://celery.cash/account?r=0xeC9AFDeF05b0cf62de551c9396E0d661ed00BCe7"
+    ],
+    "telegram": "https://t.me/celeryToken"
+  },
+  "RMZ": {
+    "name": "Xolos",
+    "address": "0x49F9ECF126B6dDF51C731614755508A4674bA7eD",
+    "symbol": "RMZ",
+    "image": "https://marketcap.cash/rmz.png",
+    "twitter": "https://twitter.com/xolosramirez1/",
+    "telegram": "https://t.me/xolosramirez",
+    "websites": ["https://www.xolosramirez.com/nft-xolos-ramirez/"],
+    "website": "https://www.xolosramirez.com/nft-xolos-ramirez/",
+    "reddit": "https://www.reddit.com/user/XolosRamirez"
+  },
+  "TANGO": {
+    "name": "TANGO",
+    "address": "0x73BE9c8Edf5e951c9a0762EA2b1DE8c8F38B5e91",
+    "symbol": "TANGO",
+    "image": "https://marketcap.cash/tango.png",
+    "websites": ["https://tangoswap.cash/"],
+    "twitter": "https://twitter.com/TangoSwapCash",
+    "telegram": "https://t.me/tangoswapcash",
+    "instagram": "http://instagram.com/tangoswap.cash"
+  },
+  "XTANGO": {
+    "name": "xTANGO",
+    "address": "0x98Ff640323C059d8C4CB846976973FEEB0E068aA",
+    "symbol": "XTANGO",
+    "image": "https://marketcap.cash/xtango.png",
+    "websites": ["https://tangoswap.cash/"],
+    "twitter": "https://twitter.com/TangoSwapCash",
+    "telegram": "https://t.me/tangoswapcash",
+    "instagram": "http://instagram.com/tangoswap.cash"
+  },
+  "MRUSD": {
+    "name": "MrUSD",
+    "desc": "MoTA Remit Universal Stable Digital Token",
+    "address": "0x048a4811d30089b5AA86e2E711A6A4aa67dbe275",
+    "symbol": "MRUSD",
+    "image": "https://marketcap.cash/mrusd.png",
+    "websites": ["https://motaglobal.club/online/"],
+    "telegram": "https://t.me/motaglobal",
+    "twitter": "https://twitter.com/MotaGlobal"
+  },
+  "SIDX": {
+    "name": "SmartIndex",
+    "desc": "First deflationary and governance token linked to a managed portfolio on SmartBCH",
+    "address": "0xF05bD3d7709980f60CD5206BddFFA8553176dd29",
+    "symbol": "SIDX",
+    "image": "https://marketcap.cash/sidx.png",
+    "websites": ["https://smartindex.cash/"],
+    "telegram": "https://t.me/smartindex_community",
+    "github": "https://github.com/kratatomi/SmartIndex"
+  },
+  "DAO": {
+    "name": "DAO",
+    "desc": "Decentralized Autonomous Organization",
+    "address": "0xca0235058985fcc1839e9e37c10900a73c126708",
+    "symbol": "DAO",
+    "image": "https://marketcap.cash/dao.png",
+    "telegram": "https://t.me/daocashorg"
+  },
+  "1BCH": {
+    "name": "1BCH",
+    "desc": "1BCH DEX",
+    "address": "0x77d4b6e44a53bbda9a1d156b32bb53a2d099e53d",
+    "symbol": "1BCH",
+    "image": "https://marketcap.cash/1bch.png",
+    "websites": ["https://1bch.com/"],
+    "telegram": "https://t.me/DeFi1BCHEnglish"
+  },
+  "RBCH": {
+    "name": "rBCH",
+    "desc": "1BCH DEX Reward Token",
+    "address": "0xb4602588e5f1f9653b6f234206c91552e457facb",
+    "symbol": "RBCH",
+    "image": "https://marketcap.cash/rbch.png",
+    "websites": ["https://1bch.com/"],
+    "telegram": "https://t.me/DeFi1BCHEnglish"
+  },
+  "FIRE": {
+    "name": "Incinerate",
+    "desc": "The Incinerate Protocol is a DeFi Token created with focus on scarcity, burning, fee distribution and liquidity acquisition.",
+    "address": "0x225FCa2A940cd5B18DFb168cD9B7f921C63d7B6E",
+    "symbol": "FIRE",
+    "image": "https://marketcap.cash/fire.png",
+    "websites": ["https://incinerate.cash/"],
+    "telegram": "https://t.me/IncinerateOfficial",
+    "twitter": "https://twitter.com/Incinerate_cash",
+    "github": "https://github.com/bchpete/Incinerate-Protocol"
+  },
+  "CLK": {
+    "name": "Catsluck",
+    "desc": "Official token of catsluck",
+    "address": "0x659F04F36e90143fCaC202D4BC36C699C078fC98",
+    "symbol": "CLK",
+    "image": "https://marketcap.cash/clk.jpg",
+    "websites": ["https://catsluck.com/"],
+    "telegram": "https://t.me/catsluck_english, https://t.me/catsluck_chinese"
+  },
+  "MMMM": {
+    "name": "MoonMoonMoonMoon",
+    "address": "0x2b591190ff951f60cb9424664155e57a402c1ade",
+    "symbol": "MMMM",
+    "image": "https://marketcap.cash/mmmm.jpeg",
+    "telegram": "https://t.me/M00Nx4",
+    "websites": ["https://mmmm.cash/"]
+  },
+  "WOJAK": {
+    "address": "0x8d7ea0ec6cab515463121a3c70df541f2f534909",
+    "desc": "The first ever automatic-rewards token on SmartBCH that pays FlexUSD just for holding, Use 12% Slippage when buying or selling Wojak",
+    "image": "https://marketcap.cash/wojak.jpeg",
+    "name": "WOJAK",
+    "symbol": "WOJAK",
+    "websites": ["https://wojak.so"],
+    "twitter": "https://twitter.com/wojak_official",
+    "telegram": "https://t.me/wojakbch"
+  },
+  "BURN": {
+    "name": "Volcano",
+    "address": "0xc07545D17e716CF7FF24ed0eb16A69157A33aaCd",
+    "symbol": "BURN",
+    "image": "https://marketcap.cash/burn.png",
+    "github": "https://github.com/VolcanoProject",
+    "twitter": "https://twitter.com/VolcanoSmartBCH",
+    "telegram": "https://t.me/VolcanoSmartBCH",
+    "desc": "Volcano (BURN) is a community focused, fair launched DeFi Token on SmartBCH."
+  },
+  "GAME": {
+    "name": "Game",
+    "address": "0xd2597a0bde31Ddec2440E256d8AA35eb63F1A9e3",
+    "symbol": "GAME",
+    "image": "https://marketcap.cash/game.png",
+    "github": "https://github.com/Abuzik/Game",
+    "websites": ["https://axiebch.com/game-token/"],
+    "telegram": "https://t.me/GameTokenBCH",
+    "desc": "GAME is the world-first CRUT-token, launched on SmartBCH. CRUT means: Community, Reflection, Utility, Transparency. It distributes 3% of all transactions among current holders, has several strong use cases and active community behind it. Find more info here: https://axiebch.com/game-token/"
+  },
+  "SMART": {
+    "address": "0x6e6D4ECE35EEd638A1153339F69E543B7ae5F776",
+    "desc": "A hyper-deflationary fluffy token with automatic reflections on SmartBCH",
+    "image": "https://marketcap.cash/smart.png",
+    "name": "SmartDoge",
+    "symbol": "SMART",
+    "telegram": ["https://t.me/smartdogebchofficial"],
+    "websites": ["https://smartdoge.cash"],
+    "twitter": "https://twitter.com/smartdogebch"
+  },
+  "CAO": {
+    "name": "CAO",
+    "address": "0x8358758D3952A0146560F3584d3b219ed631E1ea",
+    "symbol": "CAO",
+    "image": "https://marketcap.cash/cao.png",
+    "websites": ["https://cao.cash/"],
+    "twitter": "https://twitter.com/caodotcash/",
+    "telegram": "https://t.me/caocash",
+    "desc": "Centralized Autocratic Organization - Gives BCH to im_uname."
+  },
+  "DAIQUIRI": {
+    "name": "Tropical Finance Token",
+    "address": "0x24d8d5Cbc14FA6A740c3375733f0287188F8dF3b",
+    "symbol": "DAIQUIRI",
+    "image": "https://marketcap.cash/daiquiri.png",
+    "websites": ["https://app.tropical.finance/"],
+    "twitter": "https://twitter.com/tropicalfi_/",
+    "telegram": "https://t.me/tropicalfinance",
+    "desc": "Tropical Finance is a state of the art DEX and yield farming application on SmartBCH Chain with unique features."
+  },
+  "MARGARITA": {
+    "name": "MARGARITA",
+    "address": "0xe935C33b314330C773f9A135C0c8D8E857588609",
+    "symbol": "MARGARITA",
+    "image": "https://marketcap.cash/margarita.png",
+    "websites": [
+      "https://app.tropical.finance/",
+      "https://wonders.cash",
+      "https://stake.wonders.cash"
+    ],
+    "twitter": "https://twitter.com/tropicalfi_/",
+    "telegram": "https://t.me/tropicalfinance",
+    "desc": "Tropical Finance's Layer2 Token, an asset with unique usecases focused on NFTs of Tropical Ecosystem."
+  },
+  "LAWETP": {
+    "name": "LAW Entropy",
+    "address": "0x4ee06d0486ced674E75Ed9e521725580e8ffDA21",
+    "symbol": "LAWETP",
+    "image": "https://marketcap.cash/lawetp.png",
+    "websites": ["https://blockng.money/?r=marketcapcash"],
+    "telegram": "https://t.me/BlockNGGlobal",
+    "desc": "The universe is destined for thermodynamic equilibrium — maximum entropy."
+  },
+  "GOC": {
+    "name": "GoCrypto",
+    "address": "0x4b85a666dec7c959e88b97814e46113601b07e57",
+    "symbol": "GOC",
+    "image": "https://marketcap.cash/goc.png",
+    "websites": ["https://gocrypto.com/en/"],
+    "telegram": "https://t.me/eligma",
+    "twitter": "https://twitter.com/GoCrypto_",
+    "desc": "The GoCrypto (GoC) token is a true utility commerce token used for payments on the GoCrypto platform and in the scope of our loyalty."
+  },
+  "META": {
+    "name": "METADOR",
+    "address": "0x7e56D225f69A5b0D1C2FC47673A5c41328fC82e0",
+    "symbol": "META",
+    "image": "https://marketcap.cash/meta.png",
+    "websites": ["https://smetador.space"],
+    "twitter": "https://twitter.com/Metador_SBCH",
+    "github": "https://github.com/Metador-SMARTBCH",
+    "telegram": "https://t.me/metadorSBCH",
+    "desc": "Metador is a virtual gaming project, which the main gameplay is set up around mining, combating as well as collecting resources, engaging in virtual actions with the default currency as Metador."
+  },
+  "LAMBO": {
+    "name": "Wenlambo",
+    "address": "0x0E36C351ff40183435C9Bd1D17bfb1F3548f1963",
+    "symbol": "LAMBO",
+    "image": "https://marketcap.cash/lambo.jpg",
+    "websites": ["https://wenlambotoken.github.io/"],
+    "telegram": "https://t.me/wenlambotoken",
+    "desc": "Fastest token of SmartBCH"
+  },
+  "STO": {
+    "address": "0xAFACB0004A91267b58e720E13DF570Dc6863c854",
+    "desc": "STO is a project aiming at protecting BCH ecosystem. We will review the new projects and provide investors with our judgements by doing in-depth research and analysis.",
+    "name": "SmartBCH Token Observer",
+    "symbol": "STO",
+    "image": "https://marketcap.cash/sto.png",
+    "telegram": "https://t.me/TokenObserverBCH",
+    "twitter": "https://twitter.com/STOsmartBCH"
+  },
+  "CST": {
+    "address": "0x5B75B5eb28bEceDBB0A5A3cfeE6cdb4327E1856B",
+    "desc": "CST is the utility, community reward, and governance token of CryptoSorted, a community-based crypto media publications project which rewards its holders with a weekly BCH airdrop.",
+    "name": "CryptoSorted",
+    "symbol": "CST",
+    "image": "https://marketcap.cash/cst.PNG",
+    "websites": ["https://cryptosorted.info/cst"],
+    "twitter": "https://twitter.com/crypto_sorted",
+    "telegram": "https://t.me/CryptoSorted"
+  },
+  "KIDLAMBO": {
+    "address": "0x35e1103C3A630805666AC124f3eA2F1b3d69C4Db",
+    "desc": "KIDLAMBO is a Reflection Token which distributes rewards in WenLambo token to all the holders (If can't buy use 11.5-12% slippage)",
+    "name": "Kid Lambo",
+    "symbol": "KIDLAMBO",
+    "image": "https://marketcap.cash/kidlambo.png",
+    "telegram": "https://t.me/kidlambotoken"
+  },
+  "BABYLAW": {
+    "name": "BabyLaw",
+    "desc": "BabyLaw is one of the first rewards tokens on the sBCH network, created by Admirers of the LawPunk ecosystem and coin. Prizes given to holders regularly and plans for NFTs and games in the future.",
+    "address": "0x02905c38B3CFBAE5255104C7a6FD10EF78225f35",
+    "symbol": "BABYLAW",
+    "websites": ["https://babylawbch.com/"],
+    "image": "https://marketcap.cash/babylaw.jpeg",
+    "telegram": "https://t.me/BabyLawBCH",
+    "twitter": "https://twitter.com/babylawbch?s=21",
+    "email": "Raycales@babylawbch.com"
+  },
+  "NARATH": {
+    "name": "Narath",
+    "desc": "Narath is the sister token to Konra. It's a reward token meant to serve as an incentive for those who further SmartBCH and help out in the Konra Project. Narath features a plentiful supply which is only gradually released over the next 6 + years as a good amount of the supply is locked up in a series of time locks.",
+    "address": "0x0cb20466c0dd6454acf50ec26f3042ccc6362fa0",
+    "symbol": "NARATH",
+    "image": "https://marketcap.cash/narath.png",
+    "websites": ["https://konratoken.com/Narath"],
+    "twitter": "https://twitter.com/KonraToken"
+  },
+  "EVE": {
+    "address": "0x7b82A3b1417Cd21E67f745917a80cC0f53277B8C",
+    "desc": "Expected Value for Earth is a Non-Profit Organization focused on Human ecological relationships with Earth, Animals & all Living Organisms.",
+    "image": "https://marketcap.cash/eve.png",
+    "name": "Expected Value for Earth",
+    "symbol": "EVE",
+    "websites": ["https://www.ev4earth.org/"],
+    "twitter": "https://twitter.com/EV4Earth"
+  },
+  "ZAPT": {
+    "name": "Zapit",
+    "symbol": "ZAPT",
+    "desc": "ZAPT is a reward token issued by Zapit.io which can be earned through referrals, completing tasks in the app, making merchant payments and it can also be redeemed for discounts, offers and more.",
+    "address": "0x23203d435e857EA63dEA5d43Fc098D29e3535FC5",
+    "image": "https://marketcap.cash/zapt.png",
+    "websites": ["https://zapit.io"],
+    "email": "contact@zapit.io",
+    "twitter": "https://twitter.com/zapit_io",
+    "telegram": "https://t.me/zapit_io",
+    "github": "https://github.com/zapit-io"
+  },
+  "SUN": {
+    "name": "Sun Cash DAO",
+    "symbol": "SUN",
+    "desc": "Decentralized Autonomous Organization Electronic Cash",
+    "address": "0x291361E2619Cd0fbfD880bE3c02926CfDd3c6a9F",
+    "image": "https://marketcap.cash/sun.png",
+    "twitter": "https://twitter.com/SunCash_DAO",
+    "telegram": "https://t.me/smartsuncash"
+  },
+  "FM": {
+    "name": "FOLLOW ME",
+    "desc": "Follow Me is a DeFi-based social media reward token. The token is used to create campaigns and increase the user's popularity",
+    "address": "0x03943C3ef00d92e130185CeBC0bcc435Def2cC94",
+    "symbol": "FM",
+    "image": "https://marketcap.cash/fm.png",
+    "website": "https://fmt.lol",
+    "twitter": "https://twitter.com/fmtlol",
+    "facebook": "https://www.facebook.com/fmtlol",
+    "telegram": "https://t.me/fmtlol",
+    "discord": "https://discord.gg/DNkStvC7vp"
+  },
+  "KAIJU": {
+    "name": "KAIJU",
+    "desc": "KaiJu Token was make for ecosystem of Kaiju NFT Card Battle Game. The Player can use Kaiju token to Buy or Sell Kaiju Cards.",
+    "address": "0x4f909dFE5Daaf94fbd1fD4C2E582F7608C87cd94",
+    "symbol": "KAIJU",
+    "image": "https://marketcap.cash/kaiju.png",
+    "websites": ["https://kaiju.cash"],
+    "telegram": "https://t.me/KaiJuTheShitcoinKiller",
+    "twitter": "https://twitter.com/KaijuCash"
+  },
+  "PUMP": {
+    "name": "PumpParrots",
+    "desc": "An open NFT Gaming Project on SmartBCH",
+    "address": "0x20539E145b86A388683CB067dE576303aEC6DdE3",
+    "symbol": "PUMP",
+    "websites": ["https://www.pumpitup.cash/"],
+    "telegram": "https://t.me/PumpParrots",
+    "image": "https://marketcap.cash/pump.png",
+    "twitter": "https://twitter.com/PumpParrots"
+  },
+  "RX": {
+    "name": "Cryptogesic",
+    "symbol": "RX",
+    "desc": "The main purpose of this token is to become an additional source of fund to buy essential medicine via BitcoinCash. People need funds to support their families especially in this time of pandemic.",
+    "address": "0x5E6A4DA7Ed44bb4F1a06A2909a44Cd0824A21919",
+    "image": "https://marketcap.cash/rx.png",
+    "websites": ["https://cryptogesic.github.io"],
+    "twitter": "https://twitter.com/cryptogesic",
+    "telegram": "https://t.me/cryptogesic"
+  },
+  "DLK": {
+    "name": "DogLuck",
+    "desc": "P2E game quiz platform.",
+    "address": "0xA019F70Ed3C02E861249B9e942bf4b88BCB408Df",
+    "symbol": "DLK",
+    "image": "https://marketcap.cash/dlk.svg",
+    "websites": ["https://dogluck.org"],
+    "telegram": "https://t.me/DogLuckChannel",
+    "twitter": "https://twitter.com/DogLuck_BCH"
+  },
+  "SPACE": {
+    "name": "SPACE",
+    "desc": "NFT Marketplace and Collection powered by SPACE",
+    "address": "0xB0c59E4B2249123b014c1C39D012BFCA58a8E1b7",
+    "symbol": "SPACE",
+    "image": "https://marketcap.cash/space.png",
+    "websites": ["https://timefoundation.net/Space-Finance/"],
+    "telegram": "https://t.me/SpaceOfficialFinance",
+    "twitter": "https://twitter.com/SpaceTimeFi",
+    "github": "https://github.com/starstrain/Space-Finance"
+  },
+  "GOB": {
+    "name": "Goblins",
+    "desc": "Goblins.Cash is the first decentralized reserve currency protocol on SmartBCH.",
+    "address": "0x56381cB87C8990971f3e9d948939e1a95eA113a3",
+    "symbol": "GOB",
+    "image": "https://marketcap.cash/gob.png",
+    "websites": ["https://goblins.cash"],
+    "telegram": "https://t.me/GoblinsCash",
+    "twitter": "https://twitter.com/GoblinsCash"
+  },
+  "FARM": {
+    "name": "FARM",
+    "desc": "The first token that allows you to see a 24/7 streaming of a FARM",
+    "address": "0xbd53a8fEBe9bdceacCEfaA45dC714bA718151c6B",
+    "symbol": "FARM",
+    "image": "https://marketcap.cash/farm.png",
+    "websites": ["https://thefarm.cash/"],
+    "telegram": "https://t.me/thefarmbch"
+  },
+  "FRN": {
+    "name": "Friend",
+    "desc": "FRN aims to be the most widely distributed token on sBCH",
+    "address": "0x4592b88618119e55e37ffcb28ede02bef6f3c5ba",
+    "symbol": "FRN",
+    "image": "https://marketcap.cash/frn.png",
+    "websites": ["https://frnbch.netlify.app/"],
+    "telegram": "https://t.me/FriendDAO",
+    "twitter": "https://twitter.com/Friend_sBCH"
+  },
+  "BCHDAO": {
+    "name": "BCHDAO",
+    "desc": "BCHDAO, which comes from the SmartBCH enthusiast community, we want to help quality projects on SmartBCH, gain more exposure.Our website: bchdao.cash, currently under localization development by way of Apache, is expected to be available to you in Q2 2022.",
+    "address": "0xe5643aAF41ed9e5a56C3D5D1a049b43Ac69950b2",
+    "symbol": "BCHDAO",
+    "image": "https://marketcap.cash/bchdao.png",
+    "websites": ["https://bchdao.cash"],
+    "telegram": "https://t.me/bchdao_sBCH_en",
+    "twitter": "https://twitter.com/bchdaocash",
+    "email": "smartbch@bchdao.cash",
+    "github": "https://github.com/bchdao"
+  },
+  "EMBER": {
+    "name": "Ember",
+    "desc": "EmberSwap is a decentralized exchange, providing liquidity and enabling peer-to-peer transactions on the smartBCH Network. The goal is to provide a comprehensive and convenient, one-stop platform for the cryptocurrency community.",
+    "address": "0x6BAbf5277849265b6738e75AEC43AEfdde0Ce88D",
+    "symbol": "EMBER",
+    "image": "https://marketcap.cash/ember.png",
+    "websites": ["https://emberswap.com/"],
+    "telegram": "https://t.me/IncinerateOfficial",
+    "twitter": "https://twitter.com/EmberSwapDEX",
+    "discord": "https://discord.com/invite/x3TsF9MBrq",
+    "github": "https://github.com/emberswap"
+  },
+  "LAWUSD": {
+    "name": "lawUSD",
+    "desc": "Stablecoin of LAW Ecosystem",
+    "address": "0xe1e655be6f50344e6dd708c27bd8d66492d6ecaf",
+    "symbol": "LAWUSD",
+    "image": "https://marketcap.cash/lawusd.png",
+    "websites": ["https://blockng.money/"],
+    "telegram": "https://t.me/BlockNGGlobal",
+    "twitter": "https://twitter.com/BlockngO/",
+    "github": "https://github.com/BlockNG-Foundation"
+  },
+  "WAT": {
+    "name": "WaterLoan",
+    "desc": "WaterLoan is a lending platform on SmartBCH.",
+    "address": "0x355bf937d42dd19ee60f730d505b0ac03b03e2ae",
+    "symbol": "WAT",
+    "image": "https://marketcap.cash/wat.png",
+    "websites": ["https://waterloan.finance/"],
+    "telegram": "https://t.me/waterloan_official",
+    "twitter": "https://twitter.com/realwaterloan",
+    "github": "https://github.com/waterloan"
+  },
+  "DMAX": {
+    "name": "DegenMaxi",
+    "desc": "DegenMaxi (DMAX) is the ultimate deflationary and reflection token on smartBCH that rewards holders with CST. DMAX is the one token that aims to bring degens from all crypto into the smartBCH network. Supply is fixed. The team has no allocations. And all tokens would be used to reward liquidity providers, facilitate community growth, or BURNED! Use 15% slippage when selling.",
+    "address": "0x138c0F41DfAc5783D20b4672A7511003C18d11AF",
+    "symbol": "DMAX",
+    "image": "https://marketcap.cash/dmax.png",
+    "websites": ["https://degenmaxi.com"],
+    "telegram": "https://t.me/DegenMaxi_DMAX",
+    "twitter": "https://twitter.com/DegenMaxi_DMAX"
+  },
+  "LNS": {
+    "name": "Bitcoin Cash Name Service",
+    "desc": "Decentralized naming service on smartBCH.",
+    "address": "0x35b3Ee79E1A7775cE0c11Bd8cd416630E07B0d6f",
+    "symbol": "LNS",
+    "image": "https://marketcap.cash/lns.png",
+    "websites": [
+      "https://bch.domains/",
+      "https://app.bch.domains/",
+      "https://docs.bch.domains"
+    ],
+    "twitter": "https://twitter.com/bchdomains",
+    "discord": "https://discord.gg/2Q52jB2Rzu",
+    "github": "https://github.com/bchdomains"
+  },
+  "XLNS": {
+    "name": "LNSBar",
+    "desc": "Staking token for LNS.",
+    "address": "0xBE7E034c86AC2a302f69ef3975e3D14820cC7660",
+    "symbol": "XLNS",
+    "image": "https://marketcap.cash/xlns.png",
+    "websites": ["https://app.bch.domains/stake/"],
+    "twitter": "https://twitter.com/bchdomains",
+    "discord": "https://discord.gg/2Q52jB2Rzu",
+    "github": "https://github.com/bchdomains"
+  },
+  "JOOST": {
+    "name": "Joost.energy",
+    "desc": "Tokensing Renewable Energy",
+    "address": "0x387122d80A642581E5AD620696a37b98BB9272e7",
+    "symbol": "JOOST",
+    "image": "https://marketcap.cash/joost.png",
+    "websites": ["https://joost.energy"],
+    "telegram": "t.me/joostchat",
+    "twitter": "twitter.com/joostenergy"
+  },
+  "BLUE": {
+    "name": "Bluecoin",
+    "desc": "BLUE is a SEP-20 token developed on SmartBCH created by me to show that anyone can create a token/project and teach them the whole process of it",
+    "address": "0x757b6A3F53323B6359310749BB9C0F5f3aEE1224",
+    "symbol": "BLUE",
+    "image": "https://marketcap.cash/blue.png",
+    "telegram": "https://t.me/+aqo11IM5Kno0ZjJh"
+  },
+  "HYPE": {
+    "name": "HypeMate",
+    "desc": "Hype$ is a MEME Token on SmartBCH. You can also call it a charity token because it has slightly a different vision to stand by helpless children. It also aims to bring excitement to the SmartBCH chain and it also dreams to attract more people towards BCH, to try to bring more influencers on BCH platform, to spread SmartBCH all over for the welfare of BCH.",
+    "address": "0x82e45351f76b1ffc10de2a979e327466140c6b35",
+    "symbol": "HYPE",
+    "image": "https://marketcap.cash/hype.jpg",
+    "websites": ["https://hypemate.cash/"],
+    "telegram": "https://t.me/Hype_Mate",
+    "twitter": "https://mobile.twitter.com/hype_mate"
+  },
+  "HYPER": {
+    "name": "Hyper",
+    "desc": "With collecting HYPER tokens you are ready to invest in the SBCH Network! Hyper holders are incentivized to stake their tokens to secure HyperCash, while receiving a reward in return.",
+    "address": "0x4aE8Dd5f8AA8F73Cf53a7Ad9187C67d5eaA5B2E1",
+    "symbol": "HYPER",
+    "image": "https://marketcap.cash/hyper.png",
+    "websites": ["https://hypercash.site"],
+    "telegram": "https://t.me/hypercash_sbch",
+    "twitter": "https://twitter.com/HyperCashSbch",
+    "github": "https://github.com/HyperCashSbch"
+  },
+  "PTS": {
+    "name": "Points",
+    "desc": "A soft reward and incentive token from Joystick.club, originally minted on BCH L1 via SLP. POINTS are unlocked based on gamer skill level, via NFT staking, via token staking, and can be used to mint special edition NFT's reserved for participants of the Joystick.club Play To Earn Arcade. PTS can be used for tipping and will also support Governance votes on the Joystick.club DAO.",
+    "address": "0x71df12B5A718e0110991BB641cb379077d9e8Ef7",
+    "symbol": "PTS",
+    "image": "https://marketcap.cash/pts.png",
+    "websites": ["https://joystick.club"],
+    "telegram": "https://t.me/joystickclub",
+    "twitter": "https://twitter.com/joystickclub"
+  },
+  "PDA": {
+    "name": "PandaToken",
+    "desc": "Pandaland is a gamefi on SmartBCH. PDA is the native token and plays an important role in Pandaland.",
+    "address": "0x288B6Ca2eFCF39C9B68052B0088A0cB3f3D3B5f2",
+    "symbol": "PDA",
+    "image": "https://marketcap.cash/pda.png",
+    "websites": ["https://pandaland.cash/"],
+    "telegram": "https://t.me/PandalandBCHGlobal",
+    "twitter": "https://twitter.com/PandaLandBCH"
+  },
+  "SSS": {
+    "name": "SSS",
+    "desc": "The first algorithmic token pegged to $BCH on the SmartBCH network.",
+    "address": "0x9c106Dd7F8d3f873779696654d55e79ebC89bA7A",
+    "symbol": "SSS",
+    "image": "https://marketcap.cash/sss.png",
+    "websites": ["https://www.sss.cash/"],
+    "telegram": "https://t.me/ssscash",
+    "twitter": "https://twitter.com/3scash",
+    "github": "https://github.com/SSSCASH"
+  },
+  "SSHARE": {
+    "name": "SSHARE",
+    "desc": "SSHARE holders have voting rights (governance) on proposals to improve the protocol and future use cases within the SSS,CASH ecosystem.",
+    "address": "0x780fe9a1a6498bA2C08D739872Eddf7B061EBbeC",
+    "symbol": "SSHARE",
+    "image": "https://marketcap.cash/sshare.png",
+    "websites": ["https://www.sss.cash/"],
+    "telegram": "https://t.me/ssscash",
+    "twitter": "https://twitter.com/3scash",
+    "github": "https://github.com/ssscash"
+  },
+  "SBOND": {
+    "name": "SBOND",
+    "desc": "SBOND main job is to help incentivize changes in SSS supply during an epoch contraction period.",
+    "address": "0xFD07C46121F5c621784146731D673B32e0aBDA6B",
+    "symbol": "SBOND",
+    "image": "https://marketcap.cash/sbond.png",
+    "websites": ["https://www.sss.cash/"],
+    "telegram": "https://t.me/ssscash",
+    "twitter": "https://twitter.com/3scash",
+    "github": "https://github.com/ssscash"
+  },
+  "NFTC": {
+    "address": "0x8dd87b3f50bE9C6Ac5EC08458803843F0D294B3d",
+    "desc": "The main token of the NFTClub. With this token it is possible to participate in our ecosystem. It is meant for many usecases and we are constantly working on releasing new usecases to give our users the best experience.",
+    "image": "https://marketcap.cash/nftc.png",
+    "name": "NFTC",
+    "symbol": "NFTC",
+    "telegram": "https://t.me/NFTClubOfficial",
+    "websites": ["https://nftclub.cash", "https://app.nftclub.cash"],
+    "discord": "https://discord.gg/8zqzw8zs",
+    "twitter": "https://twitter.com/PixelGuyClub1",
+    "github": "https://github.com/NftClubCash"
+  },
+  "GBCH": {
+    "name": "Goblins BCH",
+    "desc": "First elastic supply token on SmartBCH that tracks the price of BCH and adds POL for market participants of Goblins Cash",
+    "address": "0x009dC89aC501a62C4FaaF7196aeE90CF79B6fC7c",
+    "symbol": "GBCH",
+    "image": "https://marketcap.cash/gbch.png",
+    "websites": ["https://goblins.cash"],
+    "telegram": "https://t.me/GoblinsCash",
+    "twitter": "https://twitter.com/GoblinsCash"
+  },
+  "MARTINB": {
+    "name": "Africa Unite",
+    "desc": "Africa Unite (MartinB) aims at preaching unification, human development/use case for other token in totality helping Bitcoin Cash to achieve its mission.",
+    "address": "0x4EA4A00E15B9E8FeE27eB6156a865525083e9F71",
+    "symbol": "MARTINB",
+    "image": "https://marketcap.cash/martinb.png",
+    "websites": ["https://marketcap.cash/africaunitebch.png"],
+    "telegram": "https://t.me/Africaunitebch",
+    "twitter": "https://twitter.com/AfricaUniteBCH",
+    "github": "https://github.com/africaunitebch"
+  }
+}
