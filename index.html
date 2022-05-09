@@ -27,19 +27,10 @@ td {
       0 0 5px lightyellow;
 }
 </style>
-<script src="others/jquery-3.6.0.js" integrity="sha384-S58meLBGKxIiQmJ/pJ8ilvFUcGcqgla+mWH9EEKGm6i6rKxSTA2kpXJQJ8n7XK4w" crossorigin="anonymous"></script>
-<script src="others/jquery-ui.js" integrity="sha384-cBRE6iZwT9o/buXdjHQ/TMfB7uovhk0R+i+mvd4V5Megxs9NuMohD10dapiJLXzK" crossorigin="anonymous"></script>
-<script type="text/javascript" integrity="sha384-TOrQOibRJLhwxzAdxn9pLj7Kx8mTIBrNfq6jSOiHrB519TUbe3z/d79TTvE0Pv6d" crossorigin="anonymous" src="others/ethers-5.5.1.umd.min.js"></script>
+<script src="others/jquery-3.6.0.js"></script>
+<script src="others/jquery-ui.js"></script>
+<script src="others/ethers-5.5.1.umd.min.js"></script>
 <script>
-const catsPoolAddress = "0x659F04F36e90143fCaC202D4BC36C699C078fC98"
-const bchPoolAddress = "0x4d16fB4811cf8BF7a5d35397527A95911E122611"
-const flexusdPoolAddress = "0xC5bBdf3838BA468359a5a97523925350dfcc3599"
-const daoPoolAddress = "0x5BBAE609bd2e6E0c6c59401e59B5358F0C1D16b1"
-const funPoolAddress = "0xEE4CA132e07246a0066239923EB146816Bb2ee06"
-const ebenPoolAddress = "0x404B74F4B945A51FCAcF3B86b28c248aBD9496eB"
-const mistPoolAddress = "0xFbc43093c71c960F26Eed32Ec73F3d096F02C053"
-const tangoPoolAddress = "0x43A4a713e3248Ab6CB05EB9c817355Ea85E580Ca"
-const lawPoolAddress = "0x3F52E5e897AfC6e7BF8C6A4e88f86fc6B9Ce645b"
 const clkAddress = "0x659F04F36e90143fCaC202D4BC36C699C078fC98"
 
 const ReadonlyABI = [
@@ -51,7 +42,7 @@ const TokenABI = [
 "function balanceOf(address account) external view returns (uint256)",
 ]
 
-async function syncPoolSizes() {
+async function syncCLK() {
   const provider = new ethers.providers.JsonRpcProvider("https://smartbch.fountainhead.cash/mainnet");
   const tokenContract = new ethers.Contract(clkAddress, TokenABI, provider);
   
@@ -60,135 +51,150 @@ async function syncPoolSizes() {
   clkSupply = clkSupply.sub(totalBurnt)
   const amt = Math.floor(ethers.utils.formatUnits(clkSupply)*1.0);
   document.getElementById("circulatingCLK").innerText = amt;
-  document.getElementById("circulatingCLK2").innerText = amt;
-
-  (async function() {
-  var catsPool = new ethers.Contract(catsPoolAddress, ReadonlyABI, provider);
-  var [totalCATS, totalShare, userShareAndLockUntil] = await catsPool.info(bchPoolAddress)
-  var catsPoolSize = document.getElementById("catsPoolSize")
-  catsPoolSize.innerText = (ethers.utils.formatUnits(totalCATS, 2)*1.0).toFixed(2)
-  })();
-
-  (async function() {
-  var bchPool = new ethers.Contract(bchPoolAddress, ReadonlyABI, provider);
-  var [totalBCH, totalShare, userShareAndLockUntil] = await bchPool.info(bchPoolAddress)
-  var bchPoolSize = document.getElementById("bchPoolSize")
-  bchPoolSize.innerText = (ethers.utils.formatUnits(totalBCH, 18)*1.0).toFixed(2)
-  })();
-
-  (async function() {
-  var flexusdPool = new ethers.Contract(flexusdPoolAddress, ReadonlyABI, provider);
-  var [totalFLEXUSD, totalShare, userShareAndLockUntil] = await flexusdPool.info(bchPoolAddress)
-  var flexusdPoolSize = document.getElementById("flexusdPoolSize")
-  flexusdPoolSize.innerText = (ethers.utils.formatUnits(totalFLEXUSD, 18)*1.0).toFixed(2)
-  })();
-
-  (async function() {
-  var daoPool = new ethers.Contract(daoPoolAddress, ReadonlyABI, provider);
-  var [totalDAO, totalShare, userShareAndLockUntil] = await daoPool.info(bchPoolAddress)
-  var daoPoolSize = document.getElementById("daoPoolSize")
-  daoPoolSize.innerText = (ethers.utils.formatUnits(totalDAO, 7)*1.0).toFixed(2)
-  })();
-
-  (async function() {
-  var funPool = new ethers.Contract(funPoolAddress, ReadonlyABI, provider);
-  var [totalFUN, totalShare, userShareAndLockUntil] = await funPool.info(bchPoolAddress)
-  var funPoolSize = document.getElementById("funPoolSize")
-  funPoolSize.innerText = (ethers.utils.formatUnits(totalFUN, 8)*1.0).toFixed(2)
-  })();
-
-  (async function() {
-  var ebenPool = new ethers.Contract(ebenPoolAddress, ReadonlyABI, provider);
-  var [totalEBEN, totalShare, userShareAndLockUntil] = await ebenPool.info(bchPoolAddress)
-  var ebenPoolSize = document.getElementById("ebenPoolSize")
-  ebenPoolSize.innerText = (ethers.utils.formatUnits(totalEBEN, 18)*1.0).toFixed(2)
-  })();
-
-  (async function() {
-  var mistPool = new ethers.Contract(mistPoolAddress, ReadonlyABI, provider);
-  var [totalMIST, totalShare, userShareAndLockUntil] = await mistPool.info(bchPoolAddress)
-  var mistPoolSize = document.getElementById("mistPoolSize")
-  mistPoolSize.innerText = (ethers.utils.formatUnits(totalMIST, 18)*1.0).toFixed(2)
-  })();
-
-  (async function() {
-  var tangoPool = new ethers.Contract(tangoPoolAddress, ReadonlyABI, provider);
-  var [totalTANGO, totalShare, userShareAndLockUntil] = await tangoPool.info(bchPoolAddress)
-  var tangoPoolSize = document.getElementById("tangoPoolSize")
-  tangoPoolSize.innerText = (ethers.utils.formatUnits(totalTANGO, 18)*1.0).toFixed(2)
-  })();
-
-  (async function() {
-  var lawPool = new ethers.Contract(lawPoolAddress, ReadonlyABI, provider);
-  var [totalLAW, totalShare, userShareAndLockUntil] = await lawPool.info(bchPoolAddress)
-  var lawPoolSize = document.getElementById("lawPoolSize")
-  lawPoolSize.innerText = (ethers.utils.formatUnits(totalLAW, 18)*1.0).toFixed(2)
-  })();
 }
 
-function openAnnouncement() {
-      $("#announceDlg").dialog({modal: true, buttons: {Ok: function(){
-        $(this).dialog("close")
-      }}})
-      return false;
-}
+const BurnAddress = "0x0000000000000000000000000000000000000001";
+const ZeroAddress = "0x0000000000000000000000000000000000000000";
+const FactoryAddress = "0x8b4c6E5684d5E8917ED77fcDc8150b2453f149a6";
+const ABI = ["function referers(uint) external view returns (address)"]
 
 async function init() {
-  await syncPoolSizes()
-  window.setInterval(async function() {
-    await syncPoolSizes()
-  }, 10000)
+	await syncCLK()
+	const url = new URL(location.href);
+	const referId = url.searchParams.get("r");
+	if(!referId) return;
+	const oldReferer = localStorage.getItem("referer")
+	if(oldReferer && oldReferer != ZeroAddress && oldReferer != BurnAddress) return;
+	const provider = new ethers.providers.JsonRpcProvider("https://smartbch.fountainhead.cash/mainnet");
+	const factoryContract = new ethers.Contract(FactoryAddress, ABI, provider);
+	const referer = await factoryContract.referers(referId)
+	console.log("oldReferer", oldReferer, "referId", referId, referer)
+	localStorage.setItem("referer", referer)
 }
 </script>
 </head>
 <body>
 <center><img style="height: 80px; width: auto;" src="img/catsluck.jpg"/></center>
 <h2 style="text-align: center">Game & Stake Your Tokens. Have Fun!</h2>
-<h2 align="center"><a href="guess/" style="color: red">Bet On Events!</a></h2>
-<h4 style="width: 390px; margin: 0 auto;"><center>
-<a href="javascript:" onclick="return openAnnouncement();">Announcement (1st Mar 2022)</a>
-</center></h4>
+<h2 align="center" style="color: red">Lottery Pools</h2>
+<table style="margin: auto"><tr>
+		<td><a href="pool/cats"><img src="img/CATS.png" style="height: 60px; width: auto"></a></td>
+		<td><a href="pool/bch"><img src="img/BCH.jpg" style="height: 60px; width: auto"></a></td>
+		<td><a href="pool/flexusd"><img src="img/flexUSD.png" style="height: 60px; width: auto"></a></td>
+		<td><a href="pool/clk"><img src="img/clk.png" style="height: 60px; width: auto"></a></td>
+		<td><a href="pool/law"><img src="img/LAW.png" style="height: 60px; width: auto"></a></td>
+</tr></table>
 <br>
-<div>
-<table style="margin: auto">
-	<tr style="font-size: 18px"><th></th><th>POOL</th><th>&nbsp;&nbsp;&nbsp;Total Amount</th><th></th></tr>
-	<tr><td><img src="img/CATS.png" style="height: 30px; width: auto"></td><td><a href="cats" style="font-size: 18px">$CATS</a></td>
-	<td id="catsPoolSize"></td><td></td></tr>
-	<tr><td><img src="img/BCH.jpg" style="height: 30px; width: auto"></td><td><a href="bch" style="font-size: 18px">BCH</a></td>
-	<td id="bchPoolSize"></td><td></td></tr>
-	<tr><td><img src="img/flexUSD.png" style="height: 30px; width: auto"></td><td><a href="flexusd" style="font-size: 18px">FLEXUSD</a></td>
-	<td id="flexusdPoolSize"></td><td></td></tr>
-	<tr><td><img src="img/DAO.png" style="height: 30px; width: auto"></td><td><a href="dao" style="font-size: 18px">DAO</a></td>
-	<td id="daoPoolSize"></td><td></td></tr>
-	<tr><td><img src="img/FUN.png" style="height: 30px; width: auto"></td><td><a href="fun" style="font-size: 18px">FUN</a></td>
-	<td id="funPoolSize"></td><td></td></tr>
-	<tr><td><img src="img/EBEN.png" style="height: 30px; width: auto"></td><td><a href="eben" style="font-size: 18px">EBEN</a></td>
-	<td id="ebenPoolSize"></td><td></td></tr>
-	<tr><td><img src="img/MIST.png" style="height: 30px; width: auto"></td><td><a href="mist" style="font-size: 18px">MIST</a></td>
-	<td id="mistPoolSize"></td><td></td></tr>
-	<tr><td><img src="img/TANGO.png" style="height: 30px; width: auto"></td><td><a href="tango" style="font-size: 18px">TANGO</a></td>
-	<td id="tangoPoolSize"></td><td></td></tr>
-	<tr><td><img src="img/LAW.png" style="height: 30px; width: auto"></td><td><a href="law" style="font-size: 18px">LAW</a></td>
-	<td id="lawPoolSize"></td><td></td></tr>
-</table><br>
-<p align="center"><a href="blindbox/cats.html" style="font-size: 18px"> <img src="img/blindbox.gif" width="60px"></a></p>
-<center style="width: 300px; margin: 0 auto"><a target="_blank" href="https://crustipfs.xyz/ipfs/QmaEBexqCivcbes4jQDyDpJKqbCuSKGjnxXfLkiPnAD2N4/">IPFS version</a>&nbsp;&nbsp;&nbsp;
-<a target="_black" href="https://github.com/catsluck/catsluck/tree/main/audit">Audit Report</a>
+<center style="font-size: 20px">
+<form action="pool/token">
+<label for="c">Other Pools:</label>
+<select name="c" id="c">
+<option value="KI">KI</option>
+<option value="ARG">ARG</option>
+<option value="AXIEBCH">AXIEBCH</option>
+<option value="BWB">BWB</option>
+<option value="CANDYMAN">CANDYMAN</option>
+<option value="CATS">CATS</option>
+<option value="CHEESE">CHEESE</option>
+<option value="DONER">DONER</option>
+<option value="EBEN">EBEN</option>
+<option value="FATCAT">FATCAT</option>
+<option value="FLEXUSD">FLEXUSD</option>
+<option value="FLEX">FLEX</option>
+<option value="HAM">HAM</option>
+<option value="HODL">HODL</option>
+<option value="HOLY">HOLY</option>
+<option value="HONK">HONK</option>
+<option value="KITTEN">KITTEN</option>
+<option value="KNUTH">KNUTH</option>
+<option value="LIGHTNING">LIGHTNING</option>
+<option value="MAZE">MAZE</option>
+<option value="MGOT">MGOT</option>
+<option value="ORB">ORB</option>
+<option value="POTA">POTA</option>
+<option value="SHIBBCH">SHIBBCH</option>
+<option value="SPICE">SPICE</option>
+<option value="TEEF">TEEF</option>
+<option value="UATX">UATX</option>
+<option value="VANDALS">VANDALS</option>
+<option value="WRS">WRS</option>
+<option value="ZOMBIE">ZOMBIE</option>
+<option value="sBUSD">sBUSD</option>
+<option value="sVNT">sVNT</option>
+<option value="LAW">LAW</option>
+<option value="MIST">MIST</option>
+<option value="XMIST">XMIST</option>
+<option value="KONRA">KONRA</option>
+<option value="MILK">MILK</option>
+<option value="BPAD">BPAD</option>
+<option value="JOY">JOY</option>
+<option value="CLY">CLY</option>
+<option value="RMZ">RMZ</option>
+<option value="TANGO">TANGO</option>
+<option value="XTANGO">XTANGO</option>
+<option value="MRUSD">MRUSD</option>
+<option value="SIDX">SIDX</option>
+<option value="DAO">DAO</option>
+<option value="1BCH">1BCH</option>
+<option value="RBCH">RBCH</option>
+<option value="FIRE">FIRE</option>
+<option value="CLK">CLK</option>
+<option value="MMMM">MMMM</option>
+<option value="WOJAK">WOJAK</option>
+<option value="BURN">BURN</option>
+<option value="GAME">GAME</option>
+<option value="SMART">SMART</option>
+<option value="CAO">CAO</option>
+<option value="DAIQUIRI">DAIQUIRI</option>
+<option value="MARGARITA">MARGARITA</option>
+<option value="LAWETP">LAWETP</option>
+<option value="GOC">GOC</option>
+<option value="META">META</option>
+<option value="LAMBO">LAMBO</option>
+<option value="STO">STO</option>
+<option value="CST">CST</option>
+<option value="KIDLAMBO">KIDLAMBO</option>
+<option value="BABYLAW">BABYLAW</option>
+<option value="NARATH">NARATH</option>
+<option value="EVE">EVE</option>
+<option value="ZAPT">ZAPT</option>
+<option value="SUN">SUN</option>
+<option value="FM">FM</option>
+<option value="KAIJU">KAIJU</option>
+<option value="PUMP">PUMP</option>
+<option value="RX">RX</option>
+<option value="DLK">DLK</option>
+<option value="SPACE">SPACE</option>
+<option value="GOB">GOB</option>
+<option value="FARM">FARM</option>
+<option value="FRN">FRN</option>
+<option value="BCHDAO">BCHDAO</option>
+<option value="EMBER">EMBER</option>
+<option value="LAWUSD">LAWUSD</option>
+<option value="WAT">WAT</option>
+<option value="DMAX">DMAX</option>
+<option value="LNS">LNS</option>
+<option value="XLNS">XLNS</option>
+<option value="JOOST">JOOST</option>
+<option value="BLUE">BLUE</option>
+<option value="HYPE">HYPE</option>
+<option value="HYPER">HYPER</option>
+<option value="PTS">PTS</option>
+<option value="PDA">PDA</option>
+<option value="SSS">SSS</option>
+<option value="SSHARE">SSHARE</option>
+<option value="SBOND">SBOND</option>
+<option value="NFTC">NFTC</option>
+<option value="GBCH">GBCH</option>
+<option value="MARTINB">MARTINB</option>
+</select>
+<input type="submit" value="GO">
+</form>
+</center>
 <br>
-CLK in Circulation: <span style="color: red" id="circulatingCLK2">--</span></center>
-</div>
- 
-<div id="announceDlg" title="Announcement" style="display: none">
-<p>
-CLK stopped minting at 1st Mar 2022 00:00:00 GMT. Now the number of CLK in circulation is <span style="color: red" id="circulatingCLK">--</span>, which decreases every day because of burnt CLK.<br><br>
-Catsluck's lottery game will soon be updated. The new features:<br>
-&nbsp;1. Your share in the pool can be transferred to others as ERC20 tokens.<br>
-&nbsp;2. Referers will get rewards.<br>
-&nbsp;3. Use Dutch auction to buy back CLK.<br>
-&nbsp;4. Permissionless creation of new pools.<br>
-&nbsp;5. Betting on the $CATS pool will mint a new token, which is different from CLK. Stay tuned for more information.<br><br>
-One more thing: the requirement for listing games betting on events is lowered to 1 million $CATS or 0.1% of total circulating CLK.
-</p>
+<br>
+<center>CLK in Circulation: <span style="color: red" id="circulatingCLK">--</span></center>
+<h4 align="center" style="color: red"><a href="old.html">Old Version</a>&nbsp;&nbsp;&nbsp;<a href="guess/" style="color: red">Bet On Events!</a></h4>
 </div>
 
 <script>
