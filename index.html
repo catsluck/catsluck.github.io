@@ -64,12 +64,14 @@ async function init() {
 	const referId = url.searchParams.get("r");
 	if(!referId) return;
 	const oldReferer = localStorage.getItem("referer")
+	console.log("oldReferer", oldReferer)
 	if(oldReferer && oldReferer != ZeroAddress && oldReferer != BurnAddress) return;
 	const provider = new ethers.providers.JsonRpcProvider("https://smartbch.fountainhead.cash/mainnet");
 	const factoryContract = new ethers.Contract(FactoryAddress, ABI, provider);
 	const referer = await factoryContract.referers(referId)
 	console.log("oldReferer", oldReferer, "referId", referId, referer)
 	localStorage.setItem("referer", referer)
+
 }
 </script>
 </head>
@@ -85,10 +87,9 @@ async function init() {
 		<td><a href="pool/law"><img src="img/LAW.png" style="height: 60px; width: auto"></a></td>
 </tr></table>
 <br>
-<center style="font-size: 20px">
-<form action="pool/token">
-<label for="c">Other Pools:</label>
-<select name="c" id="c">
+<center style="font-size: 20px" style="width: 100px">
+<select name="c" id="c" style="width: 150px">
+<option value="--">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Pools ...</option>
 <option value="KI">KI</option>
 <option value="ARG">ARG</option>
 <option value="AXIEBCH">AXIEBCH</option>
@@ -188,17 +189,48 @@ async function init() {
 <option value="GBCH">GBCH</option>
 <option value="MARTINB">MARTINB</option>
 </select>
-<input type="submit" value="GO">
-</form>
 </center>
 <br>
+<h4><center><a href="javascript:" onclick="return openAnnouncement();">Announcement (10 May 2022)</a>
+</center></h4>
 <br>
 <center>CLK in Circulation: <span style="color: red" id="circulatingCLK">--</span></center>
 <h4 align="center" style="color: red"><a href="old.html">Old Version</a>&nbsp;&nbsp;&nbsp;<a href="guess/" style="color: red">Bet On Events!</a></h4>
 </div>
 
+<div id="announceDlg" title="Announcement" style="display: none">
+<p>
+catsluck has been upgraded to the latest version and we strongly recommend you to switch your funds from the old version to the new one as soon as possible.<br>
+<br>
+The new version has implemented all the features promised before and added an important update: VRF<br>
+<br>
+VRF ensures that catsluck gets absolutely secure and untameable random numbers, guaranteeing a fair game.<br>
+<br>
+At the same time, there are two minor drawbacks to using VRF:<br>
+&nbsp;&nbsp;1. Users need to communicate with the VRF servers each time they place a bet, which causes some network latency<br>
+&nbsp;&nbsp;2. Users must claim their prize before they can place their next bet<br>
+</p>
+</div>
+
+
 <script>
 init();
+$("#c").selectmenu();
+
+$("#c").on("selectmenuchange", function() {
+	var v = $(this).val();
+	if(v!="--") {
+		window.open("pool/token?c="+v)
+	}
+})
+
+function openAnnouncement() {
+      $("#announceDlg").dialog({modal: true, buttons: {Ok: function(){
+        $(this).dialog("close")
+      }}})
+      return false;
+}
+
 </script>
 </body>
 </html>
