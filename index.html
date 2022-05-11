@@ -219,9 +219,10 @@ $("#c").selectmenu();
 
 $("#c").on("selectmenuchange", function() {
 	var v = $(this).val();
-	console.log("Selected Coin:", v);
+	var url = "pool/token?c="+v
+	console.log("Selected Coin:", v, url);
 	if(v!="--") {
-		window.open("pool/token?c="+v)
+		window.open(url)
 	}
 })
 
