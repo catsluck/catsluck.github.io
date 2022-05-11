@@ -222,7 +222,7 @@ $("#c").on("selectmenuchange", function() {
 	var url = "pool/token?c="+v
 	console.log("Selected Coin:", v, url);
 	if(v!="--") {
-		window.open(url)
+		window.location = url
 	}
 })
 
